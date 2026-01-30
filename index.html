@@ -8,12 +8,14 @@
 <!-- Clean professional fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
   --accent: #6fb8ff;
-  --accent-soft: rgba(111,184,255,0.45);
+  --accent-soft: rgba(111,184,255,0.4);
+  --bg-dark: #070b12;
+  --bg-mid: #0f1b2a;
   --text-main: #eaf2ff;
   --text-muted: rgba(234,242,255,0.75);
 }
@@ -22,69 +24,49 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
   font-family: Inter, system-ui, sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(1000px 500px at 20% -10%, #1b2d44, transparent 60%),
+    radial-gradient(1200px 600px at 20% -10%, #1b2d44, transparent 60%),
     radial-gradient(900px 500px at 90% 10%, #132338, transparent 55%),
-    linear-gradient(180deg, #0f1b2a, #070b12);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
+    linear-gradient(180deg, var(--bg-mid), var(--bg-dark));
 }
 
-/* Subtle lightning sweep */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent 48%,
-    rgba(255,255,255,0.06) 50%,
-    transparent 52%
-  );
-  animation: flash 9s infinite;
-  pointer-events: none;
+/* page wrapper (scroll-safe) */
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
-@keyframes flash {
-  0%, 94%, 100% { opacity: 0; }
-  95% { opacity: 1; }
-}
-
-.container {
-  width: min(100%, 1200px);
-  padding: clamp(16px, 4vw, 32px);
-}
-
+/* card */
 .card {
-  margin: auto;
-  max-width: 960px;
   width: 100%;
+  max-width: 960px;
   background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 24px;
   padding: clamp(22px, 4vw, 40px);
   box-shadow:
     0 30px 80px rgba(0,0,0,0.7),
-    inset 0 0 0 1px rgba(255,255,255,0.15);
+    inset 0 0 0 1px rgba(255,255,255,0.14);
   position: relative;
 }
 
-/* Glow outline */
+/* glow */
 .card::after {
   content: "";
   position: absolute;
   inset: -1px;
   border-radius: 24px;
-  box-shadow: 0 0 45px var(--accent-soft);
-  opacity: 0.35;
+  box-shadow: 0 0 40px var(--accent-soft);
   pointer-events: none;
 }
 
+/* header */
 .header {
   text-align: center;
 }
@@ -101,6 +83,7 @@ body::before {
   font-size: 0.95rem;
 }
 
+/* content grid */
 .content {
   margin-top: clamp(20px, 4vw, 32px);
   display: grid;
@@ -109,24 +92,20 @@ body::before {
   align-items: center;
 }
 
+/* QR */
 .qr-box {
-  display: grid;
-  place-items: center;
-  padding: 16px;
-  border-radius: 20px;
-  background: rgba(0,0,0,0.4);
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.12),
-    0 20px 50px rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
 }
 
 .qr-box img {
-  width: min(100%, 320px);
-  border-radius: 16px;
+  width: min(100%, 340px);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
+/* text */
 .text {
-  font-family: "IBM Plex Sans", Inter, sans-serif;
   display: grid;
   gap: 14px;
 }
@@ -138,6 +117,7 @@ body::before {
 }
 
 .note {
+  margin-top: 6px;
   padding: 14px 16px;
   border-radius: 16px;
   background: rgba(255,255,255,0.06);
@@ -149,6 +129,7 @@ body::before {
   color: var(--accent);
 }
 
+/* footer */
 .footer {
   margin-top: clamp(20px, 4vw, 32px);
   text-align: center;
@@ -160,25 +141,19 @@ body::before {
   color: var(--accent);
 }
 
-/* Mobile fixes */
+/* responsive */
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr;
     text-align: center;
   }
 }
-
-@media (max-width: 480px) {
-  .card {
-    transform: scale(1.08);
-    transform-origin: center;
-  }
-}
 </style>
 </head>
 
 <body>
-<div class="container">
+
+<div class="page">
   <div class="card">
     <div class="header">
       <h1>⚡ Support the Forge</h1>
@@ -213,15 +188,19 @@ body::before {
   </div>
 </div>
 
-<!-- Thunder touch effect -->
+<!-- Thunder effect (SAFE + SCROLL FRIENDLY) -->
+<canvas id="thunder"></canvas>
 <script>
-const canvas = document.createElement('canvas');
+const canvas = document.getElementById('thunder');
 const ctx = canvas.getContext('2d');
+
 canvas.style.position = 'fixed';
-canvas.style.inset = 0;
+canvas.style.top = 0;
+canvas.style.left = 0;
+canvas.style.width = '100%';
+canvas.style.height = '100%';
 canvas.style.pointerEvents = 'none';
 canvas.style.zIndex = 999;
-document.body.appendChild(canvas);
 
 function resize() {
   const dpr = window.devicePixelRatio || 1;
@@ -232,24 +211,24 @@ function resize() {
 resize();
 addEventListener('resize', resize);
 
-function lightning(x, y) {
+function strike(x, y) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'rgba(140,200,255,0.95)';
+  ctx.strokeStyle = 'rgba(160,210,255,0.95)';
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(x, 0);
+  ctx.moveTo(x, y - 120);
 
   let cx = x;
-  for (let i = 0; i < y; i += 18) {
-    cx += (Math.random() - 0.5) * 28;
+  for (let i = y - 120; i < y + 20; i += 16) {
+    cx += (Math.random() - 0.5) * 26;
     ctx.lineTo(cx, i);
   }
   ctx.stroke();
 
-  setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 120);
+  setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 140);
 }
 
-addEventListener('pointerdown', e => lightning(e.clientX, e.clientY));
+addEventListener('pointerdown', e => strike(e.clientX, e.clientY));
 </script>
 
 </body>
