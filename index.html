@@ -5,21 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support the Forge</title>
 
+<!-- IBM Plex Sans (recommended font) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
   --accent: #6fb8ff;
-  --accent-soft: rgba(111,184,255,0.35);
+  --accent-soft: rgba(111,184,255,0.3);
   --glass: rgba(255,255,255,0.08);
   --glass-border: rgba(255,255,255,0.14);
   --text-main: #eef4ff;
-  --text-muted: rgba(238,244,255,0.72);
+  --text-muted: rgba(238,244,255,0.7);
 }
 
-/* Night (default) */
+/* AMOLED night default */
 body {
   --bg1: #000;
   --bg2: #000;
@@ -40,7 +41,7 @@ html {
 
 body {
   margin: 0;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
   color: var(--text-main);
   background:
     radial-gradient(1200px 600px at 20% -10%, #101a28, transparent 60%),
@@ -49,7 +50,7 @@ body {
   transition: background 0.6s ease;
 }
 
-/* Smooth storm clouds (very light) */
+/* Storm clouds (smooth & light) */
 .clouds {
   position: fixed;
   inset: -25%;
@@ -60,11 +61,29 @@ body {
   animation: drift 120s linear infinite;
   pointer-events: none;
   will-change: transform;
+  z-index: 0;
 }
 
 @keyframes drift {
   from { transform: translateX(0); }
-  to { transform: translateX(-10%); }
+  to   { transform: translateX(-10%); }
+}
+
+/* Subtle distant lightning */
+.flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.04);
+  opacity: 0;
+  animation: lightning 16s infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes lightning {
+  0%, 92%, 100% { opacity: 0; }
+  93% { opacity: 0.25; }
+  94% { opacity: 0; }
 }
 
 /* Layout */
@@ -74,6 +93,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 32px;
+  position: relative;
+  z-index: 2;
 }
 
 /* Card */
@@ -157,7 +178,7 @@ body {
 }
 .footer span { color: var(--accent); }
 
-/* Day/Night switch */
+/* Day / Night switch */
 .toggle {
   position: absolute;
   top: 18px;
@@ -165,7 +186,7 @@ body {
 }
 
 .switch {
-  width: 54px;
+  width: 56px;
   height: 28px;
   background: #1a1a1a;
   border-radius: 14px;
@@ -195,7 +216,7 @@ body {
 }
 
 .switch.day::before {
-  transform: translateX(26px);
+  transform: translateX(28px);
   content: "☀️";
   background: #fff;
 }
@@ -213,6 +234,7 @@ body {
 <body>
 
 <div class="clouds"></div>
+<div class="flash"></div>
 
 <div class="page">
   <div class="card">
@@ -255,7 +277,7 @@ body {
 const sw = document.getElementById('switch');
 const body = document.body;
 
-// Night by default
+// Night (AMOLED) by default
 sw.onclick = () => {
   sw.classList.toggle('day');
   body.classList.toggle('day');
