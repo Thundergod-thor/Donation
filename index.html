@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support the Forge</title>
 
-<!-- IBM Plex Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +12,6 @@
 <style>
 :root {
   --accent: #6fb8ff;
-  --accent-soft: rgba(111,184,255,0.3);
   --glass-border: rgba(255,255,255,0.14);
   --text-main: #eef4ff;
   --text-muted: rgba(238,244,255,0.7);
@@ -65,7 +63,7 @@ body {
   to   { transform: translateX(-10%); }
 }
 
-/* Distant lightning */
+/* Lightning flash */
 .flash {
   position: fixed;
   inset: 0;
@@ -86,7 +84,6 @@ body {
 .page {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 32px;
@@ -97,8 +94,8 @@ body {
 /* Card */
 .card {
   width: 100%;
-  max-width: 980px;
-  padding: clamp(24px, 4vw, 44px);
+  max-width: 1000px;
+  padding: clamp(28px, 4vw, 48px);
   border-radius: 28px;
   background: linear-gradient(
     180deg,
@@ -129,6 +126,7 @@ body {
 /* Header */
 .header {
   text-align: center;
+  margin-bottom: 28px;
 }
 
 .header h1 {
@@ -137,43 +135,79 @@ body {
 
 /* Content */
 .content {
-  margin-top: 36px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;
-  align-items: center;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: flex-start; /* KEY FIX */
 }
 
+/* Left */
 .qr-box img {
-  width: min(100%, 360px);
+  width: 100%;
+  max-width: 360px;
   border-radius: 22px;
   box-shadow:
     0 25px 55px rgba(0,0,0,0.65),
     0 0 35px rgba(111,184,255,0.3);
 }
 
-/* Text */
-.text { display: grid; gap: 16px; }
-.text p { margin: 0; color: var(--text-muted); }
+/* Right */
+.text {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px; /* MOVES TEXT UP */
+}
+
+.text p {
+  margin: 0;
+  color: var(--text-muted);
+}
 
 .note {
+  margin-top: 8px;
   padding: 16px;
   border-radius: 18px;
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--glass-border);
 }
 
-.note strong { color: var(--accent); }
+.note strong {
+  color: var(--accent);
+}
+
+/* Zen inside card */
+.zen-section {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+
+.zen-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+#zenCanvas {
+  width: 100%;
+  max-width: 680px;
+  height: 220px;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
 
 /* Footer */
 .footer {
-  margin-top: 36px;
+  margin-top: 28px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
-/* Day/Night switch */
+/* Toggle */
 .toggle {
   position: absolute;
   top: 18px;
@@ -187,7 +221,6 @@ body {
   border-radius: 14px;
   position: relative;
   cursor: pointer;
-  transition: background 0.4s;
 }
 
 .switch::before {
@@ -216,34 +249,15 @@ body {
   background: #fff;
 }
 
-/* Zen section */
-.zen-section {
-  margin-top: 64px;
-  text-align: center;
-  opacity: 0.9;
-}
-
-.zen-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-}
-
-#zenCanvas {
-  width: 100%;
-  max-width: 640px;
-  height: 220px;
-  margin: 0 auto;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.03);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr;
+    gap: 32px;
     text-align: center;
+  }
+  .text {
+    padding-top: 0;
   }
 }
 </style>
@@ -280,20 +294,20 @@ body {
       </div>
     </div>
 
+    <!-- ZEN INSIDE SAME CARD -->
+    <section class="zen-section">
+      <div class="zen-label">Idle moment? Gently shape the flow.</div>
+      <canvas id="zenCanvas"></canvas>
+    </section>
+
     <div class="footer">
       Forged in open source. Sustained by the community.
     </div>
   </div>
-
-  <!-- ZEN INTERACTION -->
-  <section class="zen-section">
-    <div class="zen-label">Idle moment? Gently shape the flow.</div>
-    <canvas id="zenCanvas"></canvas>
-  </section>
 </div>
 
 <script>
-/* Day / Night toggle */
+/* Day/Night toggle */
 const sw = document.getElementById('switch');
 const body = document.body;
 sw.onclick = () => {
