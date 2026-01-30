@@ -14,25 +14,29 @@
   --accent: #6fb8ff;
   --accent-soft: rgba(111,184,255,0.35);
   --glass: rgba(255,255,255,0.08);
-  --glass-border: rgba(255,255,255,0.16);
+  --glass-border: rgba(255,255,255,0.14);
   --text-main: #eef4ff;
-  --text-muted: rgba(238,244,255,0.7);
+  --text-muted: rgba(238,244,255,0.72);
 }
 
-/* AMOLED default */
+/* Night (default) */
 body {
   --bg1: #000;
   --bg2: #000;
 }
 
-/* normal mode */
-body.normal {
+/* Day mode */
+body.day {
   --bg1: #0f1b2a;
   --bg2: #070b12;
 }
 
-/* reset */
+/* Reset */
 * { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -45,55 +49,34 @@ body {
   transition: background 0.6s ease;
 }
 
-/* storm clouds */
+/* Smooth storm clouds (very light) */
 .clouds {
   position: fixed;
-  inset: -30%;
+  inset: -25%;
   background:
-    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06), transparent 60%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.05), transparent 65%),
-    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.04), transparent 70%);
-  filter: blur(80px);
-  animation: drift 80s linear infinite;
+    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03), transparent 65%);
+  filter: blur(90px);
+  animation: drift 120s linear infinite;
   pointer-events: none;
-  z-index: 0;
+  will-change: transform;
 }
 
 @keyframes drift {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-12%); }
-  100% { transform: translateX(0); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-10%); }
 }
 
-/* distant lightning flash */
-.flash {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.04);
-  opacity: 0;
-  animation: lightning 14s infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes lightning {
-  0%, 92%, 100% { opacity: 0; }
-  93% { opacity: 0.25; }
-  94% { opacity: 0; }
-}
-
-/* layout */
+/* Layout */
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 28px;
-  position: relative;
-  z-index: 2;
+  padding: 32px;
 }
 
-/* card */
+/* Card */
 .card {
   width: 100%;
   max-width: 980px;
@@ -104,28 +87,28 @@ body {
     rgba(255,255,255,0.14),
     rgba(255,255,255,0.04)
   );
-  backdrop-filter: blur(28px);
+  backdrop-filter: blur(30px);
   border: 1px solid var(--glass-border);
   box-shadow:
-    0 40px 100px rgba(0,0,0,0.8),
-    inset 0 1px 0 rgba(255,255,255,0.18);
+    0 40px 90px rgba(0,0,0,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.16);
   position: relative;
 }
 
-/* glow */
+/* Soft glow */
 .card::after {
   content: "";
   position: absolute;
-  inset: -10px;
+  inset: -12px;
   border-radius: 36px;
   background: radial-gradient(circle at top,
-    rgba(111,184,255,0.25),
+    rgba(111,184,255,0.22),
     transparent 65%);
-  filter: blur(32px);
+  filter: blur(36px);
   z-index: -1;
 }
 
-/* header */
+/* Header */
 .header { text-align: center; }
 .header h1 { margin: 0; }
 .header p {
@@ -133,7 +116,7 @@ body {
   color: var(--text-muted);
 }
 
-/* content */
+/* Content */
 .content {
   margin-top: 36px;
   display: grid;
@@ -146,11 +129,11 @@ body {
   width: min(100%, 360px);
   border-radius: 22px;
   box-shadow:
-    0 25px 60px rgba(0,0,0,0.7),
-    0 0 40px rgba(111,184,255,0.35);
+    0 25px 55px rgba(0,0,0,0.65),
+    0 0 35px rgba(111,184,255,0.3);
 }
 
-/* text */
+/* Text */
 .text { display: grid; gap: 16px; }
 .text p { margin: 0; color: var(--text-muted); }
 
@@ -160,9 +143,12 @@ body {
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--glass-border);
 }
-.note strong { color: var(--accent); }
 
-/* footer */
+.note strong {
+  color: var(--accent);
+}
+
+/* Footer */
 .footer {
   margin-top: 36px;
   text-align: center;
@@ -171,48 +157,50 @@ body {
 }
 .footer span { color: var(--accent); }
 
-/* toggle switch */
+/* Day/Night switch */
 .toggle {
   position: absolute;
   top: 18px;
   right: 18px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
 }
 
 .switch {
-  width: 44px;
-  height: 24px;
-  background: #333;
-  border-radius: 12px;
+  width: 54px;
+  height: 28px;
+  background: #1a1a1a;
+  border-radius: 14px;
   position: relative;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.4s;
 }
 
-.switch::after {
-  content: "";
+.switch::before {
+  content: "🌙";
   position: absolute;
   top: 3px;
-  left: 3px;
-  width: 18px;
-  height: 18px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: transform 0.4s, content 0.4s;
+}
+
+.switch.day {
+  background: #ffd166;
+}
+
+.switch.day::before {
+  transform: translateX(26px);
+  content: "☀️";
   background: #fff;
-  transition: transform 0.3s;
 }
 
-.switch.on {
-  background: var(--accent);
-}
-
-.switch.on::after {
-  transform: translateX(20px);
-}
-
-/* responsive */
+/* Responsive */
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr;
@@ -225,13 +213,11 @@ body {
 <body>
 
 <div class="clouds"></div>
-<div class="flash"></div>
 
 <div class="page">
   <div class="card">
     <div class="toggle">
-      AMOLED
-      <div class="switch on" id="switch"></div>
+      <div class="switch" id="switch"></div>
     </div>
 
     <div class="header">
@@ -245,11 +231,16 @@ body {
       </div>
 
       <div class="text">
-        <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
-        <p>Donations help cover server costs and continuous maintenance.</p>
+        <p>
+          I maintain custom AOSP ROMs and device ports with long-term stability in mind.
+        </p>
+        <p>
+          Donations help cover server costs and continuous maintenance.
+        </p>
+
         <div class="note">
-          UPI note:<br>
-          <strong>TG: @your_username</strong>
+          <strong>UPI NOTE : @your_tgusername</strong><br>
+          Just curious to know who supported me 😊
         </div>
       </div>
     </div>
@@ -261,16 +252,13 @@ body {
 </div>
 
 <script>
-/* AMOLED toggle */
 const sw = document.getElementById('switch');
 const body = document.body;
 
-// default ON
-body.classList.remove('normal');
-
+// Night by default
 sw.onclick = () => {
-  sw.classList.toggle('on');
-  body.classList.toggle('normal');
+  sw.classList.toggle('day');
+  body.classList.toggle('day');
 };
 </script>
 
