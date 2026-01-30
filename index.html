@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1 confirm-scale=1.0">
 <title>Support the Forge</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,331 +10,242 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --accent: #6fb8ff;
-  --glass-border: rgba(255,255,255,0.14);
-  --text-main: #eef4ff;
-  --text-muted: rgba(238,244,255,0.7);
+:root{
+  --accent:#6fb8ff;
+  --text:#eef4ff;
+  --muted:rgba(238,244,255,.7);
+  --glass:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.14);
 }
 
-/* AMOLED default */
-body {
-  --bg1: #000;
-  --bg2: #000;
+body{
+  margin:0;
+  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  color:var(--text);
+  background:radial-gradient(1000px 600px at 20% -10%,#101a28,transparent 60%),
+             radial-gradient(900px 500px at 90% 10%,#0c1420,transparent 55%),
+             #000;
 }
 
-/* Day mode */
-body.day {
-  --bg1: #0f1b2a;
-  --bg2: #070b12;
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
 }
 
-/* Reset */
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  font-family: "IBM Plex Sans", system-ui, sans-serif;
-  color: var(--text-main);
-  background:
-    radial-gradient(1200px 600px at 20% -10%, #101a28, transparent 60%),
-    radial-gradient(900px 500px at 90% 10%, #0c1420, transparent 55%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-  transition: background 0.6s ease;
+.card{
+  width:100%;
+  max-width:1100px;
+  padding:40px;
+  border-radius:28px;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  backdrop-filter:blur(28px);
+  border:1px solid var(--border);
+  box-shadow:0 40px 90px rgba(0,0,0,.8);
 }
 
-/* Background atmosphere */
-.clouds {
-  position: fixed;
-  inset: -25%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04), transparent 60%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03), transparent 65%);
-  filter: blur(90px);
-  animation: drift 140s linear infinite;
-  pointer-events: none;
-  z-index: 0;
+.header{
+  text-align:center;
+  margin-bottom:32px;
 }
 
-@keyframes drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-10%); }
+.main{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:48px;
+  align-items:flex-start;
 }
 
-/* Layout */
-.page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  position: relative;
-  z-index: 1;
+/* LEFT */
+.qr-wrap{
+  position:relative;
 }
 
-/* Card */
-.card {
-  width: 100%;
-  max-width: 1000px;
-  padding: clamp(28px, 4vw, 48px);
-  border-radius: 28px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.14),
-    rgba(255,255,255,0.04)
-  );
-  backdrop-filter: blur(30px);
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 40px 90px rgba(0,0,0,0.75),
-    inset 0 1px 0 rgba(255,255,255,0.16);
-  position: relative;
+.qr-wrap img{
+  width:100%;
+  max-width:360px;
+  border-radius:22px;
+  box-shadow:0 25px 55px rgba(0,0,0,.7);
 }
 
-/* Header */
-.header {
-  text-align: center;
-  margin-bottom: 28px;
+.zoom-btn{
+  margin-top:14px;
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:12px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:var(--accent);
+  cursor:pointer;
+  font-size:.85rem;
 }
 
-.header h1 {
-  margin: 0;
+/* RIGHT */
+.text{
+  display:grid;
+  gap:18px;
+  padding-top:10px;
 }
 
-/* Content */
-.content {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 48px;
-  align-items: flex-start;
+.text p{margin:0;color:var(--muted)}
+
+.note{
+  padding:16px;
+  border-radius:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
 }
 
-/* Left */
-.qr-box img {
-  width: 100%;
-  max-width: 360px;
-  border-radius: 22px;
-  box-shadow:
-    0 25px 55px rgba(0,0,0,0.65),
-    0 0 35px rgba(111,184,255,0.3);
+.note strong{color:var(--accent)}
+
+/* ENERGY ORB */
+.orb-box{
+  margin-top:22px;
+  height:220px;
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  position:relative;
+  overflow:hidden;
 }
 
-/* Right */
-.text {
-  display: grid;
-  gap: 18px;
-  padding-top: 18px;
+canvas{display:block}
+
+/* FOOTER */
+.footer{
+  margin-top:26px;
+  text-align:center;
+  font-size:.8rem;
+  color:var(--muted);
 }
 
-.text p {
-  margin: 0;
-  color: var(--text-muted);
+/* QR OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:50;
 }
 
-.note {
-  padding: 16px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--glass-border);
+.overlay img{
+  width:min(90vw,420px);
+  border-radius:22px;
 }
 
-.note strong {
-  color: var(--accent);
-}
+.overlay.show{display:flex}
 
-/* Grid Pulse section */
-.grid-section {
-  margin-top: 48px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  text-align: center;
-}
-
-.grid-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-#gridCanvas {
-  width: 100%;
-  max-width: 680px;
-  height: 220px;
-  margin: 0 auto;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.03);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
-}
-
-/* Footer */
-.footer {
-  margin-top: 28px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* Toggle */
-.toggle {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-}
-
-.switch {
-  width: 56px;
-  height: 28px;
-  background: #1a1a1a;
-  border-radius: 14px;
-  position: relative;
-  cursor: pointer;
-}
-
-.switch::before {
-  content: "🌙";
-  position: absolute;
-  top: 3px;
-  left: 4px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  transition: transform 0.4s, content 0.4s;
-}
-
-.switch.day {
-  background: #ffd166;
-}
-
-.switch.day::before {
-  transform: translateX(28px);
-  content: "☀️";
-  background: #fff;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .content {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    text-align: center;
-  }
-  .text {
-    padding-top: 0;
-  }
+/* MOBILE */
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .text{text-align:center}
 }
 </style>
 </head>
 
 <body>
 
-<div class="clouds"></div>
-
 <div class="page">
-  <div class="card">
-    <div class="toggle">
-      <div class="switch" id="switch"></div>
-    </div>
+<div class="card">
 
-    <div class="header">
-      <h1>Support the Forge</h1>
-    </div>
+<div class="header">
+  <h1>Support the Forge</h1>
+</div>
 
-    <div class="content">
-      <div class="qr-box">
-        <img src="donation.jpg" alt="UPI Donation QR">
-      </div>
+<div class="main">
 
-      <div class="text">
-        <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
-        <p>Donations help cover server costs and continuous maintenance.</p>
+<!-- LEFT -->
+<div class="qr-wrap">
+  <img src="donation.jpg" id="qrImg" alt="UPI QR">
+  <div class="zoom-btn" id="zoomBtn">Expand QR</div>
+</div>
 
-        <div class="note">
-          <strong>UPI NOTE : @your_tgusername</strong><br>
-          Just curious to know who supported me 😊
-        </div>
-      </div>
-    </div>
+<!-- RIGHT -->
+<div class="text">
+  <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
+  <p>Donations help cover server costs and continuous maintenance.</p>
 
-    <!-- MINIMAL GRID PULSE -->
-    <section class="grid-section">
-      <div class="grid-label">Idle moment? Touch the grid.</div>
-      <canvas id="gridCanvas"></canvas>
-    </section>
+  <div class="note">
+    <strong>UPI NOTE : @your_tgusername</strong><br>
+    Just curious to know who supported me 😊
+  </div>
 
-    <div class="footer">
-      Forged in open source. Sustained by the community.
-    </div>
+  <!-- ENERGY ORB -->
+  <div class="orb-box">
+    <canvas id="orb"></canvas>
   </div>
 </div>
 
+</div>
+
+<div class="footer">
+  Forged in open source. Sustained by the community.
+</div>
+
+</div>
+</div>
+
+<!-- QR OVERLAY -->
+<div class="overlay" id="overlay">
+  <img src="donation.jpg">
+</div>
+
 <script>
-/* Day / Night toggle */
-const sw = document.getElementById('switch');
-const body = document.body;
-sw.onclick = () => {
-  sw.classList.toggle('day');
-  body.classList.toggle('day');
-};
+/* QR Zoom */
+const overlay=document.getElementById("overlay");
+document.getElementById("zoomBtn").onclick=()=>overlay.classList.add("show");
+overlay.onclick=()=>overlay.classList.remove("show");
 
-/* Minimal Grid Pulse */
-(() => {
-  const canvas = document.getElementById("gridCanvas");
-  const ctx = canvas.getContext("2d");
-  const dpr = window.devicePixelRatio || 1;
-  let w, h;
+/* ENERGY ORB */
+const c=document.getElementById("orb"),ctx=c.getContext("2d");
+let dpr=window.devicePixelRatio||1,w,h;
+let orb={x:0,y:0},node={x:0,y:0};
 
-  function resize() {
-    w = canvas.clientWidth;
-    h = canvas.clientHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
+function resize(){
+  w=c.clientWidth;h=c.clientHeight;
+  c.width=w*dpr;c.height=h*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  orb.x=Math.random()*w;orb.y=Math.random()*h;
+}
+resize();window.addEventListener("resize",resize);
+
+c.addEventListener("pointermove",e=>{
+  const r=c.getBoundingClientRect();
+  node.x=e.clientX-r.left;
+  node.y=e.clientY-r.top;
+});
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+
+  const dx=orb.x-node.x,dy=orb.y-node.y;
+  const dist=Math.hypot(dx,dy);
+
+  if(dist<18){
+    orb.x=Math.random()*w;
+    orb.y=Math.random()*h;
   }
 
-  resize();
-  window.addEventListener("resize", resize);
+  ctx.beginPath();
+  ctx.fillStyle="rgba(111,184,255,.9)";
+  ctx.shadowColor="rgba(111,184,255,.8)";
+  ctx.shadowBlur=18;
+  ctx.arc(orb.x,orb.y,6,0,Math.PI*2);
+  ctx.fill();
 
-  const dots = [];
-  const spacing = 28;
+  ctx.beginPath();
+  ctx.fillStyle="rgba(255,255,255,.6)";
+  ctx.shadowBlur=0;
+  ctx.arc(node.x,node.y,3,0,Math.PI*2);
+  ctx.fill();
 
-  for (let y = spacing; y < h; y += spacing) {
-    for (let x = spacing; x < w; x += spacing) {
-      dots.push({ x, y, r: 0 });
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0,0,w,h);
-    dots.forEach(d => {
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(120,180,255,${0.15 + d.r})`;
-      ctx.arc(d.x, d.y, 2.2 + d.r * 6, 0, Math.PI * 2);
-      ctx.fill();
-      d.r *= 0.92;
-    });
-    requestAnimationFrame(draw);
-  }
-
-  canvas.addEventListener("pointerdown", e => {
-    const rect = canvas.getBoundingClientRect();
-    const px = e.clientX - rect.left;
-    const py = e.clientY - rect.top;
-
-    dots.forEach(d => {
-      const dist = Math.hypot(d.x - px, d.y - py);
-      if (dist < 120) d.r = Math.max(d.r, 1 - dist / 120);
-    });
-  });
-
-  draw();
-})();
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
