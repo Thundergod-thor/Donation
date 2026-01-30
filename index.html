@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support the Forge</title>
 
-<!-- IBM Plex Sans (recommended font) -->
+<!-- IBM Plex Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
   --text-muted: rgba(238,244,255,0.7);
 }
 
-/* AMOLED night default */
+/* AMOLED default */
 body {
   --bg1: #000;
   --bg2: #000;
@@ -35,9 +35,7 @@ body.day {
 /* Reset */
 * { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -50,7 +48,7 @@ body {
   transition: background 0.6s ease;
 }
 
-/* Storm clouds (smooth & light) */
+/* Storm clouds */
 .clouds {
   position: fixed;
   inset: -25%;
@@ -66,10 +64,10 @@ body {
 
 @keyframes drift {
   from { transform: translateX(0); }
-  to   { transform: translateX(-10%); }
+  to { transform: translateX(-10%); }
 }
 
-/* Subtle distant lightning */
+/* Lightning flash */
 .flash {
   position: fixed;
   inset: 0;
@@ -116,7 +114,7 @@ body {
   position: relative;
 }
 
-/* Soft glow */
+/* Glow */
 .card::after {
   content: "";
   position: absolute;
@@ -130,11 +128,21 @@ body {
 }
 
 /* Header */
-.header { text-align: center; }
-.header h1 { margin: 0; }
-.header p {
-  margin-top: 8px;
-  color: var(--text-muted);
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  color: var(--accent);
 }
 
 /* Content */
@@ -165,9 +173,7 @@ body {
   border: 1px solid var(--glass-border);
 }
 
-.note strong {
-  color: var(--accent);
-}
+.note strong { color: var(--accent); }
 
 /* Footer */
 .footer {
@@ -176,9 +182,10 @@ body {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+
 .footer span { color: var(--accent); }
 
-/* Day / Night switch */
+/* Day/Night switch */
 .toggle {
   position: absolute;
   top: 18px;
@@ -243,8 +250,11 @@ body {
     </div>
 
     <div class="header">
-      <h1>⚡ Support the Forge</h1>
-      <p>Helping keep build servers online and ROMs maintained</p>
+      <!-- PREMIUM SVG ICON -->
+      <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11 21h-1l1-7H7l6-12h1l-1 7h4l-6 12z"/>
+      </svg>
+      <h1>Support the Forge</h1>
     </div>
 
     <div class="content">
@@ -253,12 +263,8 @@ body {
       </div>
 
       <div class="text">
-        <p>
-          I maintain custom AOSP ROMs and device ports with long-term stability in mind.
-        </p>
-        <p>
-          Donations help cover server costs and continuous maintenance.
-        </p>
+        <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
+        <p>Donations help cover server costs and continuous maintenance.</p>
 
         <div class="note">
           <strong>UPI NOTE : @your_tgusername</strong><br>
@@ -268,7 +274,7 @@ body {
     </div>
 
     <div class="footer">
-      Forged in <span>open source</span>. Sustained by the community ⚡
+      Forged in <span>open source</span>. Sustained by the community
     </div>
   </div>
 </div>
@@ -277,7 +283,7 @@ body {
 const sw = document.getElementById('switch');
 const body = document.body;
 
-// Night (AMOLED) by default
+// AMOLED by default
 sw.onclick = () => {
   sw.classList.toggle('day');
   body.classList.toggle('day');
