@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support the Forge</title>
 
-<!-- Formal, clean fonts -->
+<!-- Clean professional fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg-dark: #070b12;
-  --bg-mid: #0f1b2a;
-  --accent: #6fb8ff; /* thunder blue */
+  --accent: #6fb8ff;
   --accent-soft: rgba(111,184,255,0.45);
-  --card-bg: rgba(255,255,255,0.08);
-  --border-soft: rgba(255,255,255,0.14);
-  --text-main: #e9f1ff;
-  --text-muted: rgba(233,241,255,0.75);
+  --text-main: #eaf2ff;
+  --text-muted: rgba(234,242,255,0.75);
 }
 
 * { box-sizing: border-box; }
@@ -27,15 +23,15 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(1200px 600px at 20% -10%, #1b2d44, transparent 60%),
+    radial-gradient(1000px 500px at 20% -10%, #1b2d44, transparent 60%),
     radial-gradient(900px 500px at 90% 10%, #132338, transparent 55%),
-    linear-gradient(180deg, var(--bg-mid), var(--bg-dark));
+    linear-gradient(180deg, #0f1b2a, #070b12);
   display: grid;
   place-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Subtle lightning sweep */
@@ -43,118 +39,118 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: linear-gradient(120deg,
+  background: linear-gradient(
+    120deg,
     transparent 48%,
     rgba(255,255,255,0.06) 50%,
-    transparent 52%);
-  animation: stormFlash 9s infinite;
+    transparent 52%
+  );
+  animation: flash 9s infinite;
   pointer-events: none;
 }
 
-@keyframes stormFlash {
+@keyframes flash {
   0%, 94%, 100% { opacity: 0; }
   95% { opacity: 1; }
 }
 
 .container {
-  width: min(100%, 1100px);
+  width: min(100%, 1200px);
   padding: clamp(16px, 4vw, 32px);
 }
 
 .card {
   margin: auto;
-  max-width: 720px;
-  background: var(--card-bg);
+  max-width: 960px;
+  width: 100%;
+  background: rgba(255,255,255,0.08);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius: 22px;
-  padding: clamp(20px, 4vw, 36px);
+  border-radius: 24px;
+  padding: clamp(22px, 4vw, 40px);
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.65),
-    inset 0 0 0 1px var(--border-soft);
+    0 30px 80px rgba(0,0,0,0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.15);
   position: relative;
 }
 
-/* glow outline */
+/* Glow outline */
 .card::after {
   content: "";
   position: absolute;
   inset: -1px;
-  border-radius: 22px;
-  box-shadow: 0 0 40px var(--accent-soft);
+  border-radius: 24px;
+  box-shadow: 0 0 45px var(--accent-soft);
   opacity: 0.35;
   pointer-events: none;
 }
 
 .header {
-  display: grid;
-  gap: 10px;
   text-align: center;
 }
 
 .header h1 {
   margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 700;
-  letter-spacing: 0.3px;
 }
 
 .header p {
-  margin: 0;
+  margin-top: 6px;
   color: var(--text-muted);
   font-size: 0.95rem;
 }
 
 .content {
-  margin-top: clamp(18px, 3vw, 28px);
+  margin-top: clamp(20px, 4vw, 32px);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(18px, 3vw, 28px);
+  gap: clamp(20px, 4vw, 36px);
   align-items: center;
 }
 
 .qr-box {
   display: grid;
   place-items: center;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(0,0,0,0.35);
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.4);
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.1),
-    0 15px 40px rgba(0,0,0,0.6);
+    inset 0 0 0 1px rgba(255,255,255,0.12),
+    0 20px 50px rgba(0,0,0,0.7);
 }
 
 .qr-box img {
-  width: min(100%, 260px);
-  border-radius: 14px;
+  width: min(100%, 320px);
+  border-radius: 16px;
 }
 
 .text {
+  font-family: "IBM Plex Sans", Inter, sans-serif;
   display: grid;
   gap: 14px;
-  font-family: "IBM Plex Sans", Inter, sans-serif;
 }
 
 .text p {
   margin: 0;
   color: var(--text-muted);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .note {
-  padding: 12px 14px;
-  border-radius: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
   background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border-soft);
+  border: 1px solid rgba(255,255,255,0.14);
   font-size: 0.9rem;
 }
 
 .note strong {
   color: var(--accent);
-  font-weight: 600;
 }
 
 .footer {
-  margin-top: clamp(18px, 3vw, 28px);
+  margin-top: clamp(20px, 4vw, 32px);
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-muted);
@@ -164,50 +160,97 @@ body::before {
   color: var(--accent);
 }
 
-/* Responsive adjustments */
+/* Mobile fixes */
 @media (max-width: 768px) {
   .content {
     grid-template-columns: 1fr;
     text-align: center;
   }
 }
+
+@media (max-width: 480px) {
+  .card {
+    transform: scale(1.08);
+    transform-origin: center;
+  }
+}
 </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="card">
-      <div class="header">
-        <h1>⚡ Support the Forge</h1>
-        <p>Helping keep build servers online and ROMs maintained over time</p>
+<div class="container">
+  <div class="card">
+    <div class="header">
+      <h1>⚡ Support the Forge</h1>
+      <p>Helping keep build servers online and ROMs maintained</p>
+    </div>
+
+    <div class="content">
+      <div class="qr-box">
+        <img src="donation.jpg" alt="UPI Donation QR">
       </div>
 
-      <div class="content">
-        <div class="qr-box">
-          <img src="donation.jpg" alt="UPI Donation QR" />
+      <div class="text">
+        <p>
+          I maintain custom AOSP ROMs and device ports with a focus on stability,
+          performance, and long-term support.
+        </p>
+        <p>
+          Contributions are optional, but they help cover server costs and
+          continuous maintenance.
+        </p>
+
+        <div class="note">
+          UPI note:<br>
+          <strong>TG: @your_username</strong>
         </div>
-
-        <div class="text">
-          <p>
-            I maintain custom AOSP ROMs and device ports with a focus on
-            stability, performance, and long-term support.
-          </p>
-          <p>
-            Contributions are optional, but they directly help cover server
-            costs and ongoing maintenance.
-          </p>
-
-          <div class="note">
-            While donating, please mention your Telegram username:<br />
-            <strong>TG: @your_username</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer">
-        Forged in <span>open source</span>. Sustained by the community ⚡
       </div>
     </div>
+
+    <div class="footer">
+      Forged in <span>open source</span>. Sustained by the community ⚡
+    </div>
   </div>
+</div>
+
+<!-- Thunder touch effect -->
+<script>
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+canvas.style.position = 'fixed';
+canvas.style.inset = 0;
+canvas.style.pointerEvents = 'none';
+canvas.style.zIndex = 999;
+document.body.appendChild(canvas);
+
+function resize() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+addEventListener('resize', resize);
+
+function lightning(x, y) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'rgba(140,200,255,0.95)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, 0);
+
+  let cx = x;
+  for (let i = 0; i < y; i += 18) {
+    cx += (Math.random() - 0.5) * 28;
+    ctx.lineTo(cx, i);
+  }
+  ctx.stroke();
+
+  setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 120);
+}
+
+addEventListener('pointerdown', e => lightning(e.clientX, e.clientY));
+</script>
+
 </body>
 </html>
