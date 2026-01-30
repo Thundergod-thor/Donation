@@ -12,20 +12,23 @@
 <style>
 :root {
   --accent: #6fb8ff;
-  --accent-soft: rgba(111,184,255,0.45);
-  --glass: rgba(255,255,255,0.12);
-  --glass-border: rgba(255,255,255,0.18);
+  --accent-soft: rgba(111,184,255,0.35);
+  --glass: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.16);
   --text-main: #eef4ff;
-  --text-muted: rgba(238,244,255,0.78);
-
-  --bg1: #0f1b2a;
-  --bg2: #070b12;
+  --text-muted: rgba(238,244,255,0.7);
 }
 
-body.amoled {
-  --bg1: #000000;
-  --bg2: #000000;
-  --glass: rgba(255,255,255,0.06);
+/* AMOLED default */
+body {
+  --bg1: #000;
+  --bg2: #000;
+}
+
+/* normal mode */
+body.normal {
+  --bg1: #0f1b2a;
+  --bg2: #070b12;
 }
 
 /* reset */
@@ -36,31 +39,50 @@ body {
   font-family: Inter, system-ui, sans-serif;
   color: var(--text-main);
   background:
-    radial-gradient(1200px 600px at 20% -10%, #1b2d44, transparent 60%),
-    radial-gradient(900px 500px at 90% 10%, #132338, transparent 55%),
+    radial-gradient(1200px 600px at 20% -10%, #101a28, transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, #0c1420, transparent 55%),
     linear-gradient(180deg, var(--bg1), var(--bg2));
-  transition: background 0.4s ease;
+  transition: background 0.6s ease;
 }
 
-/* fog */
-.fog {
+/* storm clouds */
+.clouds {
   position: fixed;
-  inset: -20%;
+  inset: -30%;
   background:
-    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05), transparent 60%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 65%);
-  filter: blur(70px);
-  animation: fogMove 70s linear infinite;
+    radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.05), transparent 65%),
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.04), transparent 70%);
+  filter: blur(80px);
+  animation: drift 80s linear infinite;
   pointer-events: none;
   z-index: 0;
 }
 
-@keyframes fogMove {
+@keyframes drift {
   0% { transform: translateX(0); }
-  50% { transform: translateX(-10%); }
+  50% { transform: translateX(-12%); }
   100% { transform: translateX(0); }
 }
 
+/* distant lightning flash */
+.flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.04);
+  opacity: 0;
+  animation: lightning 14s infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes lightning {
+  0%, 92%, 100% { opacity: 0; }
+  93% { opacity: 0.25; }
+  94% { opacity: 0; }
+}
+
+/* layout */
 .page {
   min-height: 100vh;
   display: flex;
@@ -68,9 +90,10 @@ body {
   justify-content: center;
   padding: 28px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
+/* card */
 .card {
   width: 100%;
   max-width: 980px;
@@ -78,34 +101,39 @@ body {
   border-radius: 28px;
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.16),
-    rgba(255,255,255,0.06)
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.04)
   );
-  backdrop-filter: blur(30px) saturate(140%);
+  backdrop-filter: blur(28px);
   border: 1px solid var(--glass-border);
   box-shadow:
-    0 40px 100px rgba(0,0,0,0.75),
-    inset 0 1px 0 rgba(255,255,255,0.22);
+    0 40px 100px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.18);
   position: relative;
-  transition: transform 0.1s ease;
 }
 
+/* glow */
 .card::after {
   content: "";
   position: absolute;
   inset: -10px;
   border-radius: 36px;
   background: radial-gradient(circle at top,
-    rgba(111,184,255,0.3),
+    rgba(111,184,255,0.25),
     transparent 65%);
-  filter: blur(35px);
+  filter: blur(32px);
   z-index: -1;
 }
 
+/* header */
 .header { text-align: center; }
 .header h1 { margin: 0; }
-.header p { color: var(--text-muted); }
+.header p {
+  margin-top: 8px;
+  color: var(--text-muted);
+}
 
+/* content */
 .content {
   margin-top: 36px;
   display: grid;
@@ -117,23 +145,24 @@ body {
 .qr-box img {
   width: min(100%, 360px);
   border-radius: 22px;
-  cursor: pointer;
   box-shadow:
-    0 25px 60px rgba(0,0,0,0.65),
-    0 0 40px rgba(111,184,255,0.45);
+    0 25px 60px rgba(0,0,0,0.7),
+    0 0 40px rgba(111,184,255,0.35);
 }
 
+/* text */
 .text { display: grid; gap: 16px; }
 .text p { margin: 0; color: var(--text-muted); }
 
 .note {
   padding: 16px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
   border: 1px solid var(--glass-border);
 }
 .note strong { color: var(--accent); }
 
+/* footer */
 .footer {
   margin-top: 36px;
   text-align: center;
@@ -142,46 +171,68 @@ body {
 }
 .footer span { color: var(--accent); }
 
-/* toggle */
+/* toggle switch */
 .toggle {
   position: absolute;
   top: 18px;
   right: 18px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  opacity: 0.85;
-}
-
-/* mobile */
-@media (max-width: 768px) {
-  .content { grid-template-columns: 1fr; text-align: center; }
-}
-
-/* modal */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  display: none;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  gap: 10px;
+  font-size: 0.85rem;
 }
-.modal img {
-  width: min(90vw, 420px);
-  border-radius: 24px;
+
+.switch {
+  width: 44px;
+  height: 24px;
+  background: #333;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
 }
-.modal.active { display: flex; }
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.3s;
+}
+
+.switch.on {
+  background: var(--accent);
+}
+
+.switch.on::after {
+  transform: translateX(20px);
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="fog"></div>
+<div class="clouds"></div>
+<div class="flash"></div>
 
 <div class="page">
-  <div class="card" id="card">
-    <div class="toggle" id="toggle">🌑 AMOLED</div>
+  <div class="card">
+    <div class="toggle">
+      AMOLED
+      <div class="switch on" id="switch"></div>
+    </div>
 
     <div class="header">
       <h1>⚡ Support the Forge</h1>
@@ -190,13 +241,16 @@ body {
 
     <div class="content">
       <div class="qr-box">
-        <img src="donation.jpg" id="qr">
+        <img src="donation.jpg" alt="UPI Donation QR">
       </div>
 
       <div class="text">
         <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
         <p>Donations help cover server costs and continuous maintenance.</p>
-        <div class="note">UPI note:<br><strong>TG: @your_username</strong></div>
+        <div class="note">
+          UPI note:<br>
+          <strong>TG: @your_username</strong>
+        </div>
       </div>
     </div>
 
@@ -206,67 +260,18 @@ body {
   </div>
 </div>
 
-<div class="modal" id="modal"><img src="donation.jpg"></div>
-<canvas id="thunder"></canvas>
-
 <script>
 /* AMOLED toggle */
-const toggle = document.getElementById('toggle');
-if(localStorage.theme==='amoled') document.body.classList.add('amoled');
-toggle.onclick=()=>{
-  document.body.classList.toggle('amoled');
-  localStorage.theme=document.body.classList.contains('amoled')?'amoled':'normal';
+const sw = document.getElementById('switch');
+const body = document.body;
+
+// default ON
+body.classList.remove('normal');
+
+sw.onclick = () => {
+  sw.classList.toggle('on');
+  body.classList.toggle('normal');
 };
-
-/* QR modal */
-qr.onclick=()=>modal.classList.add('active');
-modal.onclick=()=>modal.classList.remove('active');
-
-/* Parallax */
-const card=document.getElementById('card');
-window.addEventListener('mousemove',e=>{
-  const x=(e.clientX/window.innerWidth-0.5)*8;
-  const y=(e.clientY/window.innerHeight-0.5)*8;
-  card.style.transform=`translate(${x}px,${y}px)`;
-});
-
-/* Thunder */
-const canvas=document.getElementById('thunder');
-const ctx=canvas.getContext('2d');
-canvas.style.position='fixed';
-canvas.style.inset=0;
-canvas.style.pointerEvents='none';
-canvas.style.zIndex=999;
-
-function resize(){
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=innerWidth*dpr;
-  canvas.height=innerHeight*dpr;
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-resize(); addEventListener('resize',resize);
-
-function bolt(x,y,d=0){
-  if(d>2) return;
-  ctx.beginPath();
-  ctx.moveTo(x,y);
-  let nx=x+(Math.random()-0.5)*60;
-  let ny=y+Math.random()*90;
-  ctx.lineTo(nx,ny);
-  ctx.stroke();
-  if(Math.random()>0.6) bolt(nx,ny,d+1);
-}
-
-function strike(x,y){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle='rgba(180,220,255,0.95)';
-  ctx.lineWidth=2;
-  bolt(x,y-120);
-  setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),200);
-}
-
-addEventListener('pointerdown',e=>strike(e.clientX,e.clientY));
-setInterval(()=>strike(Math.random()*innerWidth,Math.random()*innerHeight*0.5),6000);
 </script>
 
 </body>
