@@ -2,45 +2,150 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Support the Forge</title>
+
 <style>
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto;
-  }
-  .card {
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 18px;
-    padding: 28px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-    color: #fff;
-    max-width: 420px;
-    text-align: center;
-  }
-  img {
-    margin-top: 16px;
-    border-radius: 14px;
-  }
+:root {
+  --blue: #4fc3f7;
+  --glow: rgba(79,195,247,0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #1a2a3a, #05080d 70%),
+    linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #eaf6ff;
+  overflow: hidden;
+}
+
+/* lightning effect */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg,
+      transparent 45%,
+      rgba(255,255,255,0.08) 50%,
+      transparent 55%);
+  animation: flash 7s infinite;
+}
+
+@keyframes flash {
+  0%, 95%, 100% { opacity: 0; }
+  96% { opacity: 1; }
+}
+
+.card {
+  position: relative;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.08);
+  border-radius: 22px;
+  padding: 32px 26px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+
+/* glowing border */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 22px;
+  box-shadow: 0 0 30px var(--glow);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 12px var(--glow);
+}
+
+.subtitle {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.qr {
+  margin: 22px auto 16px;
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.35);
+  box-shadow:
+    0 0 25px rgba(0,0,0,0.8),
+    inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.qr img {
+  width: 260px;
+  max-width: 100%;
+  border-radius: 14px;
+}
+
+.note {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.note span {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 22px;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.footer em {
+  color: var(--blue);
+  font-style: normal;
+}
 </style>
 </head>
+
 <body>
 
 <div class="card">
-  <h2>⚡ Support the Forge</h2>
-  <p>Helping keep build servers online and ROMs maintained.</p>
+  <h1>⚡ Support the Forge</h1>
+  <div class="subtitle">
+    Sustaining build servers & long-term ROM maintenance
+  </div>
 
-  <img src="donation.jpg" width="260" alt="UPI Donation QR">
+  <div class="qr">
+    <img src="donation.jpg" alt="UPI Donation QR">
+  </div>
 
-  <p style="margin-top:12px;font-size:0.9rem;opacity:0.85">
-    UPI note: TG @your_username
-  </p>
+  <div class="note">
+    UPI note: <span>TG @your_username</span>
+  </div>
+
+  <div class="footer">
+    <em>Forged in open source.</em><br>
+    Powered by the community ⚡
+  </div>
 </div>
 
 </body>
