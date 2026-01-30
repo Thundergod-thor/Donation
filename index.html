@@ -13,10 +13,19 @@
 :root {
   --accent: #6fb8ff;
   --accent-soft: rgba(111,184,255,0.45);
-  --glass: rgba(255,255,255,0.10);
+  --glass: rgba(255,255,255,0.12);
   --glass-border: rgba(255,255,255,0.18);
   --text-main: #eef4ff;
   --text-muted: rgba(238,244,255,0.78);
+
+  --bg1: #0f1b2a;
+  --bg2: #070b12;
+}
+
+body.amoled {
+  --bg1: #000000;
+  --bg2: #000000;
+  --glass: rgba(255,255,255,0.06);
 }
 
 /* reset */
@@ -29,157 +38,151 @@ body {
   background:
     radial-gradient(1200px 600px at 20% -10%, #1b2d44, transparent 60%),
     radial-gradient(900px 500px at 90% 10%, #132338, transparent 55%),
-    linear-gradient(180deg, #0f1b2a, #070b12);
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  transition: background 0.4s ease;
 }
 
-/* ambient fog */
-body::before {
-  content: "";
+/* fog */
+.fog {
   position: fixed;
-  inset: 0;
+  inset: -20%;
   background:
     radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05), transparent 60%),
     radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 65%);
+  filter: blur(70px);
+  animation: fogMove 70s linear infinite;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* layout */
+@keyframes fogMove {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-10%); }
+  100% { transform: translateX(0); }
+}
+
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 28px;
+  position: relative;
+  z-index: 1;
 }
 
-/* card */
 .card {
   width: 100%;
   max-width: 980px;
-  position: relative;
   padding: clamp(24px, 4vw, 44px);
   border-radius: 28px;
-
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.14),
+    rgba(255,255,255,0.16),
     rgba(255,255,255,0.06)
   );
-  backdrop-filter: blur(26px) saturate(140%);
-  -webkit-backdrop-filter: blur(26px) saturate(140%);
-
+  backdrop-filter: blur(30px) saturate(140%);
   border: 1px solid var(--glass-border);
-
   box-shadow:
     0 40px 100px rgba(0,0,0,0.75),
     inset 0 1px 0 rgba(255,255,255,0.22);
+  position: relative;
+  transition: transform 0.1s ease;
 }
 
-/* glow halo */
 .card::after {
   content: "";
   position: absolute;
-  inset: -6px;
-  border-radius: 32px;
-  background:
-    radial-gradient(circle at top,
-      rgba(111,184,255,0.25),
-      transparent 60%);
-  filter: blur(24px);
+  inset: -10px;
+  border-radius: 36px;
+  background: radial-gradient(circle at top,
+    rgba(111,184,255,0.3),
+    transparent 65%);
+  filter: blur(35px);
   z-index: -1;
 }
 
-/* header */
-.header {
-  text-align: center;
-}
+.header { text-align: center; }
+.header h1 { margin: 0; }
+.header p { color: var(--text-muted); }
 
-.header h1 {
-  margin: 0;
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
-
-.header p {
-  margin-top: 8px;
-  color: var(--text-muted);
-  font-size: 0.96rem;
-}
-
-/* content */
 .content {
-  margin-top: clamp(22px, 4vw, 36px);
+  margin-top: 36px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 4vw, 40px);
+  gap: 36px;
   align-items: center;
-}
-
-/* qr */
-.qr-box {
-  display: flex;
-  justify-content: center;
 }
 
 .qr-box img {
   width: min(100%, 360px);
   border-radius: 22px;
+  cursor: pointer;
   box-shadow:
     0 25px 60px rgba(0,0,0,0.65),
-    0 0 35px rgba(111,184,255,0.35);
+    0 0 40px rgba(111,184,255,0.45);
 }
 
-/* text */
-.text {
-  display: grid;
-  gap: 16px;
-}
-
-.text p {
-  margin: 0;
-  color: var(--text-muted);
-  line-height: 1.65;
-}
+.text { display: grid; gap: 16px; }
+.text p { margin: 0; color: var(--text-muted); }
 
 .note {
-  padding: 16px 18px;
+  padding: 16px;
   border-radius: 18px;
   background: rgba(255,255,255,0.08);
   border: 1px solid var(--glass-border);
-  font-size: 0.9rem;
 }
+.note strong { color: var(--accent); }
 
-.note strong {
-  color: var(--accent);
-}
-
-/* footer */
 .footer {
-  margin-top: clamp(22px, 4vw, 36px);
+  margin-top: 36px;
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+.footer span { color: var(--accent); }
 
-.footer span {
-  color: var(--accent);
+/* toggle */
+.toggle {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.85;
 }
 
-/* responsive */
+/* mobile */
 @media (max-width: 768px) {
-  .content {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+  .content { grid-template-columns: 1fr; text-align: center; }
 }
+
+/* modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal img {
+  width: min(90vw, 420px);
+  border-radius: 24px;
+}
+.modal.active { display: flex; }
 </style>
 </head>
 
 <body>
 
+<div class="fog"></div>
+
 <div class="page">
-  <div class="card">
+  <div class="card" id="card">
+    <div class="toggle" id="toggle">🌑 AMOLED</div>
+
     <div class="header">
       <h1>⚡ Support the Forge</h1>
       <p>Helping keep build servers online and ROMs maintained</p>
@@ -187,23 +190,13 @@ body::before {
 
     <div class="content">
       <div class="qr-box">
-        <img src="donation.jpg" alt="UPI Donation QR">
+        <img src="donation.jpg" id="qr">
       </div>
 
       <div class="text">
-        <p>
-          I maintain custom AOSP ROMs and device ports with a focus on stability,
-          performance, and long-term support.
-        </p>
-        <p>
-          Contributions are optional, but they help cover server costs and
-          continuous maintenance.
-        </p>
-
-        <div class="note">
-          UPI note:<br>
-          <strong>TG: @your_username</strong>
-        </div>
+        <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
+        <p>Donations help cover server costs and continuous maintenance.</p>
+        <div class="note">UPI note:<br><strong>TG: @your_username</strong></div>
       </div>
     </div>
 
@@ -213,44 +206,67 @@ body::before {
   </div>
 </div>
 
-<!-- thunder canvas -->
+<div class="modal" id="modal"><img src="donation.jpg"></div>
 <canvas id="thunder"></canvas>
+
 <script>
-const canvas = document.getElementById('thunder');
-const ctx = canvas.getContext('2d');
+/* AMOLED toggle */
+const toggle = document.getElementById('toggle');
+if(localStorage.theme==='amoled') document.body.classList.add('amoled');
+toggle.onclick=()=>{
+  document.body.classList.toggle('amoled');
+  localStorage.theme=document.body.classList.contains('amoled')?'amoled':'normal';
+};
 
-canvas.style.position = 'fixed';
-canvas.style.inset = 0;
-canvas.style.pointerEvents = 'none';
-canvas.style.zIndex = 999;
+/* QR modal */
+qr.onclick=()=>modal.classList.add('active');
+modal.onclick=()=>modal.classList.remove('active');
 
-function resize() {
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = innerWidth * dpr;
-  canvas.height = innerHeight * dpr;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+/* Parallax */
+const card=document.getElementById('card');
+window.addEventListener('mousemove',e=>{
+  const x=(e.clientX/window.innerWidth-0.5)*8;
+  const y=(e.clientY/window.innerHeight-0.5)*8;
+  card.style.transform=`translate(${x}px,${y}px)`;
+});
+
+/* Thunder */
+const canvas=document.getElementById('thunder');
+const ctx=canvas.getContext('2d');
+canvas.style.position='fixed';
+canvas.style.inset=0;
+canvas.style.pointerEvents='none';
+canvas.style.zIndex=999;
+
+function resize(){
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=innerWidth*dpr;
+  canvas.height=innerHeight*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
-resize();
-addEventListener('resize', resize);
+resize(); addEventListener('resize',resize);
 
-function strike(x, y) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'rgba(170,220,255,0.95)';
-  ctx.lineWidth = 2;
+function bolt(x,y,d=0){
+  if(d>2) return;
   ctx.beginPath();
-  ctx.moveTo(x, y - 140);
-
-  let cx = x;
-  for (let i = y - 140; i < y + 20; i += 18) {
-    cx += (Math.random() - 0.5) * 30;
-    ctx.lineTo(cx, i);
-  }
+  ctx.moveTo(x,y);
+  let nx=x+(Math.random()-0.5)*60;
+  let ny=y+Math.random()*90;
+  ctx.lineTo(nx,ny);
   ctx.stroke();
-
-  setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 160);
+  if(Math.random()>0.6) bolt(nx,ny,d+1);
 }
 
-addEventListener('pointerdown', e => strike(e.clientX, e.clientY));
+function strike(x,y){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(180,220,255,0.95)';
+  ctx.lineWidth=2;
+  bolt(x,y-120);
+  setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),200);
+}
+
+addEventListener('pointerdown',e=>strike(e.clientX,e.clientY));
+setInterval(()=>strike(Math.random()*innerWidth,Math.random()*innerHeight*0.5),6000);
 </script>
 
 </body>
