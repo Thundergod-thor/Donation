@@ -14,7 +14,6 @@
 :root {
   --accent: #6fb8ff;
   --accent-soft: rgba(111,184,255,0.3);
-  --glass: rgba(255,255,255,0.08);
   --glass-border: rgba(255,255,255,0.14);
   --text-main: #eef4ff;
   --text-muted: rgba(238,244,255,0.7);
@@ -58,16 +57,15 @@ body {
   filter: blur(90px);
   animation: drift 120s linear infinite;
   pointer-events: none;
-  will-change: transform;
   z-index: 0;
 }
 
 @keyframes drift {
   from { transform: translateX(0); }
-  to { transform: translateX(-10%); }
+  to   { transform: translateX(-10%); }
 }
 
-/* Lightning flash */
+/* Distant lightning */
 .flash {
   position: fixed;
   inset: 0;
@@ -88,6 +86,7 @@ body {
 .page {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 32px;
@@ -134,15 +133,6 @@ body {
 
 .header h1 {
   margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.icon {
-  width: 26px;
-  height: 26px;
-  color: var(--accent);
 }
 
 /* Content */
@@ -182,8 +172,6 @@ body {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
-
-.footer span { color: var(--accent); }
 
 /* Day/Night switch */
 .toggle {
@@ -228,6 +216,29 @@ body {
   background: #fff;
 }
 
+/* Zen section */
+.zen-section {
+  margin-top: 64px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.zen-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+#zenCanvas {
+  width: 100%;
+  max-width: 640px;
+  height: 220px;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .content {
@@ -250,10 +261,6 @@ body {
     </div>
 
     <div class="header">
-      <!-- PREMIUM SVG ICON -->
-      <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M11 21h-1l1-7H7l6-12h1l-1 7h4l-6 12z"/>
-      </svg>
       <h1>Support the Forge</h1>
     </div>
 
@@ -274,20 +281,80 @@ body {
     </div>
 
     <div class="footer">
-      Forged in <span>open source</span>. Sustained by the community
+      Forged in open source. Sustained by the community.
     </div>
   </div>
+
+  <!-- ZEN INTERACTION -->
+  <section class="zen-section">
+    <div class="zen-label">Idle moment? Gently shape the flow.</div>
+    <canvas id="zenCanvas"></canvas>
+  </section>
 </div>
 
 <script>
+/* Day / Night toggle */
 const sw = document.getElementById('switch');
 const body = document.body;
-
-// AMOLED by default
 sw.onclick = () => {
   sw.classList.toggle('day');
   body.classList.toggle('day');
 };
+
+/* Zen interaction */
+(() => {
+  const canvas = document.getElementById("zenCanvas");
+  const ctx = canvas.getContext("2d");
+  let dpr = window.devicePixelRatio || 1;
+  let w, h, t = 0;
+  let ix = 0.5, iy = 0;
+  let running = false;
+
+  function resize() {
+    w = canvas.clientWidth;
+    h = canvas.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  function draw() {
+    if (!running) return;
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle = "rgba(120,180,255,0.85)";
+    ctx.lineWidth = 2;
+    ctx.shadowColor = "rgba(120,180,255,0.6)";
+    ctx.shadowBlur = 12;
+
+    ctx.beginPath();
+    for (let x=0;x<=w;x+=8){
+      const nx=x/w;
+      const wave=Math.sin(nx*6+t)*28+Math.sin(nx*2+t*0.7)*14;
+      const y=h/2+wave+iy*Math.exp(-Math.abs(nx-ix)*6);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    iy*=0.96;
+    t+=0.008;
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener("pointermove", e=>{
+    const r=canvas.getBoundingClientRect();
+    ix=(e.clientX-r.left)/r.width;
+    iy+=(e.clientY-r.top-r.height/2)*0.04;
+  });
+
+  const obs=new IntersectionObserver(e=>{
+    running=e[0].isIntersecting;
+    if(running) draw();
+  },{threshold:0.2});
+
+  obs.observe(canvas);
+})();
 </script>
 
 </body>
