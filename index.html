@@ -12,7 +12,6 @@
 <style>
 :root {
   --accent: #6fb8ff;
-  --accent-strong: #3a7bd5;
   --text: #eef4ff;
   --muted: rgba(238,244,255,.7);
   --glass: rgba(255,255,255,.08);
@@ -20,7 +19,6 @@
   --bg: #000;
 }
 
-/* Light mode */
 body.light {
   --bg: #eef1f6;
   --text: #111;
@@ -40,7 +38,6 @@ body {
     var(--bg);
   color: var(--text);
   transition: background .4s, color .4s;
-  position: relative;
 }
 
 /* Premium vignette for light mode */
@@ -84,17 +81,37 @@ body.light::before {
   position: relative;
 }
 
-/* Toggle */
-.toggle {
+/* ===== REAL TOGGLE SWITCH ===== */
+.theme-switch {
   position: absolute;
   top: 18px;
   right: 18px;
-  padding: 8px 12px;
-  border-radius: 12px;
+  width: 64px;
+  height: 32px;
+  border-radius: 16px;
   background: var(--glass);
   border: 1px solid var(--border);
   cursor: pointer;
-  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+}
+
+.switch-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(180deg,#fff,#ddd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 4px 10px rgba(0,0,0,.35);
+}
+
+body.light .switch-thumb {
+  transform: translateX(32px);
 }
 
 /* Header */
@@ -107,7 +124,6 @@ body.light::before {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 48px;
-  align-items: flex-start;
 }
 
 /* LEFT */
@@ -139,10 +155,7 @@ body.light::before {
   padding-top: 10px;
 }
 
-.text p {
-  margin: 0;
-  color: var(--muted);
-}
+.text p { margin: 0; color: var(--muted); }
 
 .note {
   padding: 16px;
@@ -151,39 +164,23 @@ body.light::before {
   border: 1px solid var(--border);
 }
 
-.note strong {
-  color: var(--accent);
-}
+.note strong { color: var(--accent); }
 
 /* ECG */
 .life-box {
   margin-top: 22px;
   height: 180px;
   border-radius: 18px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.06),
-      rgba(255,255,255,.02)
-    );
+  background: linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
   border: 1px solid rgba(255,255,255,.12);
   overflow: hidden;
 }
 
 body.light .life-box {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(220,225,235,.7),
-      rgba(210,215,225,.5)
-    );
+  background: linear-gradient(180deg,rgba(220,225,235,.7),rgba(210,215,225,.5));
 }
 
-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+canvas { width: 100%; height: 100%; display: block; }
 
 /* Footer */
 .footer {
@@ -203,9 +200,7 @@ canvas {
   justify-content: center;
   z-index: 50;
 }
-
 .overlay.show { display: flex; }
-
 .overlay img {
   width: min(90vw,420px);
   border-radius: 22px;
@@ -224,7 +219,10 @@ canvas {
 <div class="page">
 <div class="card">
 
-<div class="toggle" id="modeBtn">🌙 / ☀️</div>
+<!-- WORKING SWITCH -->
+<div class="theme-switch" id="themeSwitch">
+  <div class="switch-thumb" id="thumb">🌙</div>
+</div>
 
 <div class="header">
   <h1>Support the Forge</h1>
@@ -232,13 +230,11 @@ canvas {
 
 <div class="main">
 
-<!-- LEFT -->
 <div class="qr-wrap">
-  <img src="donation.jpg" alt="UPI QR">
+  <img src="donation.jpg">
   <div class="zoom-btn" id="zoomBtn">Expand QR</div>
 </div>
 
-<!-- RIGHT -->
 <div class="text">
   <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
   <p>Donations help cover server costs and continuous maintenance.</p>
@@ -248,7 +244,6 @@ canvas {
     Just curious to know who supported me 😊
   </div>
 
-  <!-- ECG -->
   <div class="life-box">
     <canvas id="ecg"></canvas>
   </div>
@@ -263,86 +258,76 @@ canvas {
 </div>
 </div>
 
-<!-- QR Overlay -->
 <div class="overlay" id="overlay">
   <img src="donation.jpg">
 </div>
 
 <script>
-/* Dark / Light toggle */
-document.getElementById("modeBtn").onclick =
-  () => document.body.classList.toggle("light");
+/* Theme switch */
+const switchEl = document.getElementById("themeSwitch");
+const thumb = document.getElementById("thumb");
+
+switchEl.onclick = () => {
+  document.body.classList.toggle("light");
+  thumb.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+};
 
 /* QR Zoom */
 const overlay = document.getElementById("overlay");
-document.getElementById("zoomBtn").onclick =
-  () => overlay.classList.add("show");
+document.getElementById("zoomBtn").onclick = () => overlay.classList.add("show");
 overlay.onclick = () => overlay.classList.remove("show");
 
-/* REALISTIC ECG (non-repeating, alive) */
+/* REAL ECG */
 const c = document.getElementById("ecg");
 const ctx = c.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
-let w, h;
+let w, h, phase = 0;
+let beat = 90, targetBeat = 90;
+let amp = 1, targetAmp = 1, base = 0;
 
-let phase = 0;
-let beatLength = 90;
-let targetBeat = 90;
-let amp = 1;
-let targetAmp = 1;
-let baselinePhase = 0;
-
-function resize() {
-  w = c.clientWidth;
-  h = c.clientHeight;
-  c.width = w * dpr;
-  c.height = h * dpr;
+function resize(){
+  w = c.clientWidth; h = c.clientHeight;
+  c.width = w*dpr; c.height = h*dpr;
   ctx.setTransform(dpr,0,0,dpr,0,0);
 }
-resize();
-window.addEventListener("resize", resize);
+resize(); window.addEventListener("resize", resize);
 
-function ecgWave(t, a) {
-  if (t < 12) return 0;
-  if (t < 20) return -12 * a;   // Q
-  if (t < 24) return 55 * a;    // R
-  if (t < 30) return -22 * a;   // S
-  if (t < 46) return 14 * a;    // T
+function wave(t,a){
+  if(t<12) return 0;
+  if(t<20) return -12*a;
+  if(t<24) return 55*a;
+  if(t<30) return -22*a;
+  if(t<46) return 14*a;
   return 0;
 }
 
-function draw() {
+function draw(){
   ctx.clearRect(0,0,w,h);
 
-  beatLength += (targetBeat - beatLength) * 0.02;
-  amp += (targetAmp - amp) * 0.02;
-
-  baselinePhase += 0.002;
-  const baseline = Math.sin(baselinePhase) * 4;
+  beat += (targetBeat-beat)*0.02;
+  amp += (targetAmp-amp)*0.02;
+  base += 0.002;
 
   ctx.strokeStyle = document.body.classList.contains("light")
     ? "rgba(40,90,160,.95)"
     : "rgba(120,190,255,.95)";
-
   ctx.lineWidth = 2.3;
   ctx.shadowColor = ctx.strokeStyle;
   ctx.shadowBlur = document.body.classList.contains("light") ? 6 : 18;
 
   ctx.beginPath();
-  for (let x = 0; x < w; x++) {
-    const t = (x + phase) % beatLength;
-    const y = h/2 + baseline + ecgWave(t, amp);
-    x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  for(let x=0;x<w;x++){
+    const t=(x+phase)%beat;
+    const y=h/2+Math.sin(base)*4+wave(t,amp);
+    x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
   }
   ctx.stroke();
 
   phase += 1.6;
-
-  if (Math.random() < 0.01) {
-    targetBeat = 82 + Math.random() * 14;
-    targetAmp = 0.85 + Math.random() * 0.3;
+  if(Math.random()<0.01){
+    targetBeat = 82 + Math.random()*14;
+    targetAmp = 0.85 + Math.random()*0.3;
   }
-
   requestAnimationFrame(draw);
 }
 draw();
