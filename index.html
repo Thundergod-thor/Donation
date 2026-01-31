@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Support the Forge</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,160 +10,179 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --accent:#6fb8ff;
-  --text:#eef4ff;
-  --muted:rgba(238,244,255,.7);
-  --glass:rgba(255,255,255,.06);
-  --border:rgba(255,255,255,.14);
-  --bg:#000;
+:root {
+  --accent: #6fb8ff;
+  --text: #eef4ff;
+  --muted: rgba(238,244,255,.7);
+  --glass: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.16);
+  --bg: #000;
 }
 
-body.light{
-  --bg:#f3f6fb;
-  --text:#111;
-  --muted:#444;
-  --glass:rgba(0,0,0,.06);
-  --border:rgba(0,0,0,.14);
+body.light {
+  --bg: #f2f4f8;
+  --text: #111;
+  --muted: #444;
+  --glass: rgba(0,0,0,.06);
+  --border: rgba(0,0,0,.12);
 }
 
-body{
-  margin:0;
-  font-family:"IBM Plex Sans",system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:.4s;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(900px 500px at 20% -10%, #101a28, transparent 60%),
+    radial-gradient(800px 500px at 90% 10%, #0c1420, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  transition: background .4s, color .4s;
 }
 
-.page{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:32px;
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
 }
 
-.card{
-  width:100%;
-  max-width:1100px;
-  padding:40px;
-  border-radius:28px;
-  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));
-  backdrop-filter:blur(28px);
-  border:1px solid var(--border);
-  box-shadow:0 40px 90px rgba(0,0,0,.6);
-  position:relative;
+.card {
+  width: 100%;
+  max-width: 1100px;
+  padding: 44px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.18),
+    rgba(255,255,255,.05)
+  );
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 40px 90px rgba(0,0,0,.75),
+    inset 0 1px 0 rgba(255,255,255,.2);
+  position: relative;
 }
 
-.toggle{
-  position:absolute;
-  top:18px;
-  right:18px;
-  cursor:pointer;
-  padding:8px 12px;
-  border-radius:12px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  font-size:.85rem;
+/* Toggle */
+.toggle {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: .85rem;
 }
 
-.header{
-  text-align:center;
-  margin-bottom:32px;
+.header {
+  text-align: center;
+  margin-bottom: 36px;
 }
 
-.main{
-  display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:48px;
-  align-items:flex-start;
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 48px;
+  align-items: flex-start;
 }
 
 /* LEFT */
-.qr-wrap img{
-  width:100%;
-  max-width:360px;
-  border-radius:22px;
-  box-shadow:0 25px 55px rgba(0,0,0,.6);
+.qr-wrap img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 22px;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.65),
+    0 0 30px rgba(111,184,255,.35);
 }
 
-.zoom-btn{
-  margin-top:14px;
-  display:inline-block;
-  padding:10px 14px;
-  border-radius:12px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  cursor:pointer;
-  font-size:.85rem;
+.zoom-btn {
+  margin-top: 14px;
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: .85rem;
 }
 
 /* RIGHT */
-.text{
-  display:grid;
-  gap:18px;
+.text {
+  display: grid;
+  gap: 18px;
+  padding-top: 10px;
 }
 
-.note{
-  padding:16px;
-  border-radius:18px;
-  background:var(--glass);
-  border:1px solid var(--border);
+.text p {
+  margin: 0;
+  color: var(--muted);
 }
 
-.note strong{color:var(--accent)}
-
-/* SNAKE GAME */
-.game-box{
-  margin-top:20px;
-  padding:12px;
-  border-radius:18px;
-  background:rgba(0,0,0,.25);
-  border:1px solid var(--border);
+.note {
+  padding: 16px;
+  border-radius: 18px;
+  background: var(--glass);
+  border: 1px solid var(--border);
 }
 
-.score{
-  font-size:.85rem;
-  margin-bottom:6px;
-  color:var(--muted);
+.note strong {
+  color: var(--accent);
 }
 
-canvas{
-  background:#000;
-  border-radius:12px;
-  display:block;
+/* ZEN LINE */
+.line-box {
+  margin-top: 22px;
+  height: 200px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.08);
+  overflow: hidden;
 }
 
-/* FOOTER */
-.footer{
-  margin-top:28px;
-  text-align:center;
-  font-size:.8rem;
-  color:var(--muted);
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-/* QR Overlay */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:99;
+/* Footer */
+.footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--muted);
 }
 
-.overlay img{
-  width:min(90vw,420px);
-  border-radius:22px;
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
 }
 
-.overlay.show{display:flex}
+.overlay img {
+  width: min(90vw,420px);
+  border-radius: 22px;
+}
+
+.overlay.show { display: flex; }
 
 /* Mobile */
-@media(max-width:900px){
-  .main{grid-template-columns:1fr}
-  .text{text-align:center}
+@media(max-width: 900px) {
+  .main { grid-template-columns: 1fr; }
+  .text { text-align: center; }
 }
 </style>
 </head>
@@ -183,7 +202,7 @@ canvas{
 
 <!-- LEFT -->
 <div class="qr-wrap">
-  <img src="donation.jpg" id="qrImg">
+  <img src="donation.jpg" alt="UPI QR">
   <div class="zoom-btn" id="zoomBtn">Expand QR</div>
 </div>
 
@@ -197,10 +216,9 @@ canvas{
     Just curious to know who supported me 😊
   </div>
 
-  <!-- SNAKE GAME -->
-  <div class="game-box">
-    <div class="score">Score: <span id="score">0</span></div>
-    <canvas id="game" width="260" height="260"></canvas>
+  <!-- ZEN LINE -->
+  <div class="line-box">
+    <canvas id="line"></canvas>
   </div>
 </div>
 
@@ -213,71 +231,59 @@ canvas{
 </div>
 </div>
 
+<!-- QR Overlay -->
 <div class="overlay" id="overlay">
   <img src="donation.jpg">
 </div>
 
 <script>
-/* Dark / Light toggle */
-const btn=document.getElementById("modeBtn");
-btn.onclick=()=>document.body.classList.toggle("light");
+/* Dark / Light */
+document.getElementById("modeBtn").onclick =
+  () => document.body.classList.toggle("light");
 
 /* QR Zoom */
-const overlay=document.getElementById("overlay");
-document.getElementById("zoomBtn").onclick=()=>overlay.classList.add("show");
-overlay.onclick=()=>overlay.classList.remove("show");
+const overlay = document.getElementById("overlay");
+document.getElementById("zoomBtn").onclick =
+  () => overlay.classList.add("show");
+overlay.onclick = () => overlay.classList.remove("show");
 
-/* SNAKE GAME */
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
-const size=13;
-let snake=[[10,10]];
-let dir=[1,0];
-let apple=[5,5];
-let score=0;
+/* Zen Line */
+const c = document.getElementById("line");
+const ctx = c.getContext("2d");
+let dpr = window.devicePixelRatio || 1;
+let w, h, t = 0;
 
-function draw(){
-  ctx.clearRect(0,0,260,260);
+function resize() {
+  w = c.clientWidth;
+  h = c.clientHeight;
+  c.width = w * dpr;
+  c.height = h * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+resize();
+window.addEventListener("resize", resize);
 
-  // Apple (🍎-like)
-  ctx.fillStyle="red";
+function draw() {
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle = "rgba(120,180,255,.85)";
+  ctx.lineWidth = 2;
+  ctx.shadowColor = "rgba(120,180,255,.6)";
+  ctx.shadowBlur = 14;
+
   ctx.beginPath();
-  ctx.arc(apple[0]*size+6,apple[1]*size+6,5,0,Math.PI*2);
-  ctx.fill();
-
-  // Snake
-  ctx.fillStyle="#6fb8ff";
-  snake.forEach(s=>ctx.fillRect(s[0]*size,s[1]*size,12,12));
-}
-
-function step(){
-  const head=[snake[0][0]+dir[0],snake[0][1]+dir[1]];
-
-  if(head[0]<0||head[1]<0||head[0]>19||head[1]>19){
-    snake=[[10,10]];score=0;
+  for (let x = 0; x <= w; x += 8) {
+    const nx = x / w;
+    const y =
+      h/2 +
+      Math.sin(nx*6 + t)*26 +
+      Math.sin(nx*2 + t*.7)*14;
+    x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
   }
-
-  snake.unshift(head);
-
-  if(head[0]==apple[0]&&head[1]==apple[1]){
-    score++;
-    document.getElementById("score").textContent=score;
-    apple=[Math.floor(Math.random()*19),Math.floor(Math.random()*19)];
-  }else{
-    snake.pop();
-  }
-
-  draw();
+  ctx.stroke();
+  t += 0.008;
+  requestAnimationFrame(draw);
 }
-
-setInterval(step,160);
-
-window.addEventListener("keydown",e=>{
-  if(e.key=="ArrowUp")dir=[0,-1];
-  if(e.key=="ArrowDown")dir=[0,1];
-  if(e.key=="ArrowLeft")dir=[-1,0];
-  if(e.key=="ArrowRight")dir=[1,0];
-});
+draw();
 </script>
 
 </body>
