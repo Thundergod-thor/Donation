@@ -19,8 +19,9 @@
   --bg: #000;
 }
 
+/* Light mode */
 body.light {
-  --bg: #f2f4f8;
+  --bg: #eef1f6;
   --text: #111;
   --muted: #444;
   --glass: rgba(0,0,0,.06);
@@ -38,6 +39,19 @@ body {
     var(--bg);
   color: var(--text);
   transition: background .4s, color .4s;
+  position: relative;
+}
+
+/* Premium light-mode vignette */
+body.light::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(400px 200px at 95% 5%, rgba(0,0,0,.25), transparent 60%),
+    radial-gradient(600px 300px at 5% 0%, rgba(0,0,0,.18), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .page {
@@ -46,6 +60,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 32px;
+  position: relative;
+  z-index: 1;
 }
 
 .card {
@@ -80,6 +96,7 @@ body {
   font-size: .85rem;
 }
 
+/* Header */
 .header {
   text-align: center;
   margin-bottom: 36px;
@@ -142,8 +159,8 @@ body {
   margin-top: 22px;
   height: 200px;
   border-radius: 18px;
-  background: rgba(255,255,255,.035);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.12);
   overflow: hidden;
 }
 
@@ -237,7 +254,7 @@ canvas {
 </div>
 
 <script>
-/* Dark / Light */
+/* Dark / Light toggle */
 document.getElementById("modeBtn").onclick =
   () => document.body.classList.toggle("light");
 
@@ -247,7 +264,7 @@ document.getElementById("zoomBtn").onclick =
   () => overlay.classList.add("show");
 overlay.onclick = () => overlay.classList.remove("show");
 
-/* Zen Line */
+/* Zen Line (fixed visibility) */
 const c = document.getElementById("line");
 const ctx = c.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
@@ -265,22 +282,24 @@ window.addEventListener("resize", resize);
 
 function draw() {
   ctx.clearRect(0,0,w,h);
-  ctx.strokeStyle = "rgba(120,180,255,.85)";
-  ctx.lineWidth = 2;
-  ctx.shadowColor = "rgba(120,180,255,.6)";
-  ctx.shadowBlur = 14;
+
+  ctx.strokeStyle = "rgba(111,184,255,0.95)";
+  ctx.lineWidth = 2.2;
+  ctx.shadowColor = "rgba(111,184,255,0.85)";
+  ctx.shadowBlur = 18;
 
   ctx.beginPath();
-  for (let x = 0; x <= w; x += 8) {
+  for (let x = 0; x <= w; x += 6) {
     const nx = x / w;
     const y =
       h/2 +
-      Math.sin(nx*6 + t)*26 +
-      Math.sin(nx*2 + t*.7)*14;
+      Math.sin(nx*6 + t)*24 +
+      Math.sin(nx*2 + t*.8)*14;
     x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
   }
   ctx.stroke();
-  t += 0.008;
+
+  t += 0.009;
   requestAnimationFrame(draw);
 }
 draw();
