@@ -12,6 +12,7 @@
 <style>
 :root {
   --accent: #6fb8ff;
+  --accent-strong: #3a7bd5;
   --text: #eef4ff;
   --muted: rgba(238,244,255,.7);
   --glass: rgba(255,255,255,.08);
@@ -19,6 +20,7 @@
   --bg: #000;
 }
 
+/* Light mode */
 body.light {
   --bg: #eef1f6;
   --text: #111;
@@ -38,17 +40,16 @@ body {
     var(--bg);
   color: var(--text);
   transition: background .4s, color .4s;
-  position: relative;
 }
 
-/* Premium vignette for light mode */
+/* Light mode vignette */
 body.light::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(400px 200px at 95% 5%, rgba(0,0,0,.22), transparent 60%),
-    radial-gradient(600px 300px at 5% 0%, rgba(0,0,0,.16), transparent 70%);
+    radial-gradient(420px 220px at 95% 5%, rgba(0,0,0,.25), transparent 60%),
+    radial-gradient(600px 300px at 5% 0%, rgba(0,0,0,.18), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -74,12 +75,8 @@ body.light::before {
     rgba(255,255,255,.05)
   );
   backdrop-filter: blur(32px) saturate(140%);
-  -webkit-backdrop-filter: blur(32px) saturate(140%);
   border: 1px solid var(--border);
-  box-shadow:
-    0 40px 90px rgba(0,0,0,.75),
-    inset 0 1px 0 rgba(255,255,255,.2);
-  position: relative;
+  box-shadow: 0 40px 90px rgba(0,0,0,.75);
 }
 
 /* Toggle */
@@ -95,7 +92,7 @@ body.light::before {
   font-size: .85rem;
 }
 
-/* Header */
+/* Layout */
 .header {
   text-align: center;
   margin-bottom: 36px;
@@ -105,7 +102,6 @@ body.light::before {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 48px;
-  align-items: flex-start;
 }
 
 /* LEFT */
@@ -113,9 +109,7 @@ body.light::before {
   width: 100%;
   max-width: 360px;
   border-radius: 22px;
-  box-shadow:
-    0 30px 60px rgba(0,0,0,.65),
-    0 0 30px rgba(111,184,255,.35);
+  box-shadow: 0 30px 60px rgba(0,0,0,.65);
 }
 
 .zoom-btn {
@@ -134,13 +128,9 @@ body.light::before {
 .text {
   display: grid;
   gap: 18px;
-  padding-top: 10px;
 }
 
-.text p {
-  margin: 0;
-  color: var(--muted);
-}
+.text p { margin: 0; color: var(--muted); }
 
 .note {
   padding: 16px;
@@ -149,18 +139,30 @@ body.light::before {
   border: 1px solid var(--border);
 }
 
-.note strong {
-  color: var(--accent);
-}
+.note strong { color: var(--accent); }
 
-/* LIFELINE */
+/* ECG */
 .life-box {
   margin-top: 22px;
   height: 180px;
   border-radius: 18px;
-  background: rgba(255,255,255,.045);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.06),
+      rgba(255,255,255,.02)
+    );
   border: 1px solid rgba(255,255,255,.12);
   overflow: hidden;
+}
+
+body.light .life-box {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(220,225,235,.7),
+      rgba(210,215,225,.5)
+    );
 }
 
 canvas {
@@ -185,18 +187,16 @@ canvas {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 50;
 }
+
+.overlay.show { display: flex; }
 
 .overlay img {
   width: min(90vw,420px);
   border-radius: 22px;
 }
 
-.overlay.show { display: flex; }
-
-/* Mobile */
-@media(max-width: 900px) {
+@media(max-width:900px) {
   .main { grid-template-columns: 1fr; }
   .text { text-align: center; }
 }
@@ -216,13 +216,11 @@ canvas {
 
 <div class="main">
 
-<!-- LEFT -->
 <div class="qr-wrap">
-  <img src="donation.jpg" alt="UPI QR">
+  <img src="donation.jpg">
   <div class="zoom-btn" id="zoomBtn">Expand QR</div>
 </div>
 
-<!-- RIGHT -->
 <div class="text">
   <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
   <p>Donations help cover server costs and continuous maintenance.</p>
@@ -232,9 +230,8 @@ canvas {
     Just curious to know who supported me 😊
   </div>
 
-  <!-- LIFELINE -->
   <div class="life-box">
-    <canvas id="life"></canvas>
+    <canvas id="ecg"></canvas>
   </div>
 </div>
 
@@ -247,13 +244,12 @@ canvas {
 </div>
 </div>
 
-<!-- QR Overlay -->
 <div class="overlay" id="overlay">
   <img src="donation.jpg">
 </div>
 
 <script>
-/* Dark / Light toggle */
+/* Mode toggle */
 document.getElementById("modeBtn").onclick =
   () => document.body.classList.toggle("light");
 
@@ -263,11 +259,13 @@ document.getElementById("zoomBtn").onclick =
   () => overlay.classList.add("show");
 overlay.onclick = () => overlay.classList.remove("show");
 
-/* LIFELINE / HEARTBEAT */
-const c = document.getElementById("life");
+/* REAL ECG */
+const c = document.getElementById("ecg");
 const ctx = c.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
-let w, h, offset = 0;
+let w, h;
+let x = 0;
+let beatOffset = 0;
 
 function resize() {
   w = c.clientWidth;
@@ -279,31 +277,36 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-function heartbeat(x) {
-  if (x < 20) return 0;
-  if (x < 30) return -30;
-  if (x < 36) return 60;
-  if (x < 42) return -20;
+function ecgWave(t) {
+  if (t < 10) return 0;              // baseline
+  if (t < 18) return -10;            // Q
+  if (t < 22) return 50;             // R
+  if (t < 26) return -20;            // S
+  if (t < 40) return 12;             // T
   return 0;
 }
 
 function draw() {
-  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = "rgba(0,0,0,.12)";
+  ctx.fillRect(0,0,w,h);
 
-  ctx.strokeStyle = "rgba(111,184,255,0.95)";
+  ctx.strokeStyle = document.body.classList.contains("light")
+    ? "rgba(40,90,160,.95)"
+    : "rgba(111,184,255,.95)";
+
   ctx.lineWidth = 2.2;
-  ctx.shadowColor = "rgba(111,184,255,0.9)";
-  ctx.shadowBlur = 18;
+  ctx.shadowColor = ctx.strokeStyle;
+  ctx.shadowBlur = document.body.classList.contains("light") ? 6 : 16;
 
   ctx.beginPath();
-  for (let x = 0; x <= w; x += 2) {
-    const t = (x + offset) % 80;
-    const y = h/2 + heartbeat(t);
-    x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  for (let i = 0; i < w; i++) {
+    const t = (i + beatOffset) % 80;
+    const y = h/2 + ecgWave(t) + Math.sin((i+beatOffset)*0.03)*1.5;
+    i === 0 ? ctx.moveTo(i,y) : ctx.lineTo(i,y);
   }
   ctx.stroke();
 
-  offset += 2;
+  beatOffset += 1.6;
   requestAnimationFrame(draw);
 }
 draw();
