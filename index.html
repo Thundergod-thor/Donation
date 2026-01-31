@@ -19,7 +19,6 @@
   --bg: #000;
 }
 
-/* Light mode */
 body.light {
   --bg: #eef1f6;
   --text: #111;
@@ -42,14 +41,14 @@ body {
   position: relative;
 }
 
-/* Premium light-mode vignette */
+/* Premium vignette for light mode */
 body.light::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(400px 200px at 95% 5%, rgba(0,0,0,.25), transparent 60%),
-    radial-gradient(600px 300px at 5% 0%, rgba(0,0,0,.18), transparent 70%);
+    radial-gradient(400px 200px at 95% 5%, rgba(0,0,0,.22), transparent 60%),
+    radial-gradient(600px 300px at 5% 0%, rgba(0,0,0,.16), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -154,10 +153,10 @@ body.light::before {
   color: var(--accent);
 }
 
-/* ZEN LINE */
-.line-box {
+/* LIFELINE */
+.life-box {
   margin-top: 22px;
-  height: 200px;
+  height: 180px;
   border-radius: 18px;
   background: rgba(255,255,255,.045);
   border: 1px solid rgba(255,255,255,.12);
@@ -233,9 +232,9 @@ canvas {
     Just curious to know who supported me 😊
   </div>
 
-  <!-- ZEN LINE -->
-  <div class="line-box">
-    <canvas id="line"></canvas>
+  <!-- LIFELINE -->
+  <div class="life-box">
+    <canvas id="life"></canvas>
   </div>
 </div>
 
@@ -264,11 +263,11 @@ document.getElementById("zoomBtn").onclick =
   () => overlay.classList.add("show");
 overlay.onclick = () => overlay.classList.remove("show");
 
-/* Zen Line (fixed visibility) */
-const c = document.getElementById("line");
+/* LIFELINE / HEARTBEAT */
+const c = document.getElementById("life");
 const ctx = c.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
-let w, h, t = 0;
+let w, h, offset = 0;
 
 function resize() {
   w = c.clientWidth;
@@ -280,26 +279,31 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
+function heartbeat(x) {
+  if (x < 20) return 0;
+  if (x < 30) return -30;
+  if (x < 36) return 60;
+  if (x < 42) return -20;
+  return 0;
+}
+
 function draw() {
   ctx.clearRect(0,0,w,h);
 
   ctx.strokeStyle = "rgba(111,184,255,0.95)";
   ctx.lineWidth = 2.2;
-  ctx.shadowColor = "rgba(111,184,255,0.85)";
+  ctx.shadowColor = "rgba(111,184,255,0.9)";
   ctx.shadowBlur = 18;
 
   ctx.beginPath();
-  for (let x = 0; x <= w; x += 6) {
-    const nx = x / w;
-    const y =
-      h/2 +
-      Math.sin(nx*6 + t)*24 +
-      Math.sin(nx*2 + t*.8)*14;
+  for (let x = 0; x <= w; x += 2) {
+    const t = (x + offset) % 80;
+    const y = h/2 + heartbeat(t);
     x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
   }
   ctx.stroke();
 
-  t += 0.009;
+  offset += 2;
   requestAnimationFrame(draw);
 }
 draw();
