@@ -40,9 +40,10 @@ body {
     var(--bg);
   color: var(--text);
   transition: background .4s, color .4s;
+  position: relative;
 }
 
-/* Light mode vignette */
+/* Premium vignette for light mode */
 body.light::before {
   content: "";
   position: fixed;
@@ -75,8 +76,12 @@ body.light::before {
     rgba(255,255,255,.05)
   );
   backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
   border: 1px solid var(--border);
-  box-shadow: 0 40px 90px rgba(0,0,0,.75);
+  box-shadow:
+    0 40px 90px rgba(0,0,0,.75),
+    inset 0 1px 0 rgba(255,255,255,.2);
+  position: relative;
 }
 
 /* Toggle */
@@ -92,7 +97,7 @@ body.light::before {
   font-size: .85rem;
 }
 
-/* Layout */
+/* Header */
 .header {
   text-align: center;
   margin-bottom: 36px;
@@ -102,6 +107,7 @@ body.light::before {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 48px;
+  align-items: flex-start;
 }
 
 /* LEFT */
@@ -109,7 +115,9 @@ body.light::before {
   width: 100%;
   max-width: 360px;
   border-radius: 22px;
-  box-shadow: 0 30px 60px rgba(0,0,0,.65);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.65),
+    0 0 30px rgba(111,184,255,.35);
 }
 
 .zoom-btn {
@@ -128,9 +136,13 @@ body.light::before {
 .text {
   display: grid;
   gap: 18px;
+  padding-top: 10px;
 }
 
-.text p { margin: 0; color: var(--muted); }
+.text p {
+  margin: 0;
+  color: var(--muted);
+}
 
 .note {
   padding: 16px;
@@ -139,7 +151,9 @@ body.light::before {
   border: 1px solid var(--border);
 }
 
-.note strong { color: var(--accent); }
+.note strong {
+  color: var(--accent);
+}
 
 /* ECG */
 .life-box {
@@ -187,6 +201,7 @@ canvas {
   display: none;
   align-items: center;
   justify-content: center;
+  z-index: 50;
 }
 
 .overlay.show { display: flex; }
@@ -196,6 +211,7 @@ canvas {
   border-radius: 22px;
 }
 
+/* Mobile */
 @media(max-width:900px) {
   .main { grid-template-columns: 1fr; }
   .text { text-align: center; }
@@ -216,11 +232,13 @@ canvas {
 
 <div class="main">
 
+<!-- LEFT -->
 <div class="qr-wrap">
-  <img src="donation.jpg">
+  <img src="donation.jpg" alt="UPI QR">
   <div class="zoom-btn" id="zoomBtn">Expand QR</div>
 </div>
 
+<!-- RIGHT -->
 <div class="text">
   <p>I maintain custom AOSP ROMs and device ports with long-term stability in mind.</p>
   <p>Donations help cover server costs and continuous maintenance.</p>
@@ -230,6 +248,7 @@ canvas {
     Just curious to know who supported me 😊
   </div>
 
+  <!-- ECG -->
   <div class="life-box">
     <canvas id="ecg"></canvas>
   </div>
@@ -244,12 +263,13 @@ canvas {
 </div>
 </div>
 
+<!-- QR Overlay -->
 <div class="overlay" id="overlay">
   <img src="donation.jpg">
 </div>
 
 <script>
-/* Mode toggle */
+/* Dark / Light toggle */
 document.getElementById("modeBtn").onclick =
   () => document.body.classList.toggle("light");
 
@@ -259,13 +279,18 @@ document.getElementById("zoomBtn").onclick =
   () => overlay.classList.add("show");
 overlay.onclick = () => overlay.classList.remove("show");
 
-/* REAL ECG */
+/* REALISTIC ECG (non-repeating, alive) */
 const c = document.getElementById("ecg");
 const ctx = c.getContext("2d");
 let dpr = window.devicePixelRatio || 1;
 let w, h;
-let x = 0;
-let beatOffset = 0;
+
+let phase = 0;
+let beatLength = 90;
+let targetBeat = 90;
+let amp = 1;
+let targetAmp = 1;
+let baselinePhase = 0;
 
 function resize() {
   w = c.clientWidth;
@@ -277,36 +302,47 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-function ecgWave(t) {
-  if (t < 10) return 0;              // baseline
-  if (t < 18) return -10;            // Q
-  if (t < 22) return 50;             // R
-  if (t < 26) return -20;            // S
-  if (t < 40) return 12;             // T
+function ecgWave(t, a) {
+  if (t < 12) return 0;
+  if (t < 20) return -12 * a;   // Q
+  if (t < 24) return 55 * a;    // R
+  if (t < 30) return -22 * a;   // S
+  if (t < 46) return 14 * a;    // T
   return 0;
 }
 
 function draw() {
-  ctx.fillStyle = "rgba(0,0,0,.12)";
-  ctx.fillRect(0,0,w,h);
+  ctx.clearRect(0,0,w,h);
+
+  beatLength += (targetBeat - beatLength) * 0.02;
+  amp += (targetAmp - amp) * 0.02;
+
+  baselinePhase += 0.002;
+  const baseline = Math.sin(baselinePhase) * 4;
 
   ctx.strokeStyle = document.body.classList.contains("light")
     ? "rgba(40,90,160,.95)"
-    : "rgba(111,184,255,.95)";
+    : "rgba(120,190,255,.95)";
 
-  ctx.lineWidth = 2.2;
+  ctx.lineWidth = 2.3;
   ctx.shadowColor = ctx.strokeStyle;
-  ctx.shadowBlur = document.body.classList.contains("light") ? 6 : 16;
+  ctx.shadowBlur = document.body.classList.contains("light") ? 6 : 18;
 
   ctx.beginPath();
-  for (let i = 0; i < w; i++) {
-    const t = (i + beatOffset) % 80;
-    const y = h/2 + ecgWave(t) + Math.sin((i+beatOffset)*0.03)*1.5;
-    i === 0 ? ctx.moveTo(i,y) : ctx.lineTo(i,y);
+  for (let x = 0; x < w; x++) {
+    const t = (x + phase) % beatLength;
+    const y = h/2 + baseline + ecgWave(t, amp);
+    x === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
   }
   ctx.stroke();
 
-  beatOffset += 1.6;
+  phase += 1.6;
+
+  if (Math.random() < 0.01) {
+    targetBeat = 82 + Math.random() * 14;
+    targetAmp = 0.85 + Math.random() * 0.3;
+  }
+
   requestAnimationFrame(draw);
 }
 draw();
