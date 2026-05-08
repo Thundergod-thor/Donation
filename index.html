@@ -61,6 +61,22 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
+
+  transition:
+    background .45s ease,
+    color .35s ease;
+}
+
+/* ===== GPU SMOOTHNESS ===== */
+
+canvas,
+.card,
+.particles span,
+.qr-wrap img,
+.thumb,
+.theme-switch{
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
 
 /* ===== BACKGROUND ===== */
@@ -100,9 +116,11 @@ body::before{
 }
 
 @keyframes gridMove{
+
   from{
     transform:translateY(0);
   }
+
   to{
     transform:translateY(42px);
   }
@@ -193,9 +211,13 @@ body::before{
   box-shadow:
     0 25px 100px rgba(0,0,0,.65),
     inset 0 1px 0 rgba(255,255,255,.10);
+
+  transition:
+    background .45s ease,
+    border-color .45s ease;
 }
 
-/* ambient purple glow */
+/* ===== GLOW ===== */
 
 .card::before{
   content:"";
@@ -236,32 +258,53 @@ body::before{
   top:18px;
   right:18px;
 
-  width:68px;
-  height:34px;
+  width:56px;
+  height:30px;
 
-  border-radius:18px;
+  border-radius:999px;
 
   display:flex;
   align-items:center;
 
-  padding:4px;
+  padding:3px;
 
   cursor:pointer;
 
-  background:rgba(255,255,255,.06);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.08),
+      rgba(255,255,255,.04)
+    );
 
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.10);
+
+  backdrop-filter:blur(14px);
+
+  transition:
+    background .35s ease,
+    border-color .35s ease,
+    transform .25s ease;
 
   z-index:5;
 }
 
+.theme-switch:hover{
+  transform:scale(1.03);
+}
+
 .thumb{
-  width:26px;
-  height:26px;
+  width:22px;
+  height:22px;
 
   border-radius:50%;
 
-  background:white;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,1),
+      rgba(230,230,230,.95)
+    );
 
   color:#111;
 
@@ -269,14 +312,19 @@ body::before{
   align-items:center;
   justify-content:center;
 
-  font-size:14px;
+  font-size:11px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.25);
 
   transition:
-    transform .35s cubic-bezier(.4,0,.2,1);
+    transform .42s cubic-bezier(.22,1,.36,1),
+    background .35s ease,
+    box-shadow .35s ease;
 }
 
 body.light .thumb{
-  transform:translateX(32px);
+  transform:translateX(26px);
 }
 
 /* ===== HEADER ===== */
@@ -339,8 +387,6 @@ body.light .thumb{
   position:relative;
 }
 
-/* subtle floating ring */
-
 .qr-wrap::before{
   content:"";
   position:absolute;
@@ -363,8 +409,6 @@ body.light .thumb{
   pointer-events:none;
 }
 
-/* QR */
-
 .qr-wrap img{
   width:100%;
   max-width:360px;
@@ -386,6 +430,7 @@ body.light .thumb{
 }
 
 .qr-wrap img:hover{
+
   transform:
     translateY(-4px)
     scale(1.01);
@@ -453,7 +498,7 @@ body.light .thumb{
   font-size:1rem;
 }
 
-/* note */
+/* ===== NOTE ===== */
 
 .note{
   padding:18px;
@@ -499,8 +544,6 @@ body.light .thumb{
 
   border:1px solid rgba(255,255,255,.08);
 }
-
-/* inner grid */
 
 .life-box::before{
   content:"";
@@ -592,7 +635,6 @@ canvas{
   .life-box{
     height:180px;
   }
-
 }
 
 </style>
@@ -608,7 +650,7 @@ canvas{
 
 <div class="card">
 
-<!-- SWITCH -->
+<!-- THEME SWITCH -->
 
 <div class="theme-switch" id="themeSwitch">
   <div class="thumb" id="thumb">🌙</div>
@@ -689,7 +731,9 @@ canvas{
 
 <script>
 
-/* ===== THEME SWITCH ===== */
+/* =========================================================
+   SMOOTH THEME SWITCH
+========================================================= */
 
 const switchEl =
   document.getElementById("themeSwitch");
@@ -697,176 +741,259 @@ const switchEl =
 const thumb =
   document.getElementById("thumb");
 
-switchEl.onclick = () => {
+switchEl.addEventListener("click", () => {
 
   document.body.classList.toggle("light");
 
-  thumb.textContent =
-    document.body.classList.contains("light")
-      ? "☀️"
-      : "🌙";
-};
+  const isLight =
+    document.body.classList.contains("light");
 
-/* ===== QR OVERLAY ===== */
+  thumb.textContent =
+    isLight ? "☀️" : "🌙";
+});
+
+/* =========================================================
+   QR OVERLAY
+========================================================= */
 
 const overlay =
   document.getElementById("overlay");
 
-document
-  .getElementById("zoomBtn")
-  .onclick = () => {
+const zoomBtn =
+  document.getElementById("zoomBtn");
 
-    overlay.classList.add("show");
-};
+zoomBtn.addEventListener("click", () => {
+  overlay.classList.add("show");
+});
 
-overlay.onclick = () => {
+overlay.addEventListener("click", () => {
   overlay.classList.remove("show");
-};
+});
 
-/* ===== PARTICLES ===== */
+/* =========================================================
+   HIGH FPS PARTICLES
+========================================================= */
 
 const particles =
   document.getElementById("particles");
 
-for(let i = 0; i < 55; i++){
+const PARTICLE_COUNT = 42;
 
-  const p =
+for(let i = 0; i < PARTICLE_COUNT; i++){
+
+  const particle =
     document.createElement("span");
 
   const size =
-    Math.random() * 4 + 2;
+    Math.random() * 3 + 1.5;
 
-  p.style.width =
-    size + "px";
+  const duration =
+    12 + Math.random() * 10;
 
-  p.style.height =
-    size + "px";
+  const delay =
+    Math.random() * -20;
 
-  p.style.left =
-    Math.random() * 100 + "vw";
+  particle.style.width =
+    `${size}px`;
 
-  p.style.animationDuration =
-    (8 + Math.random() * 10) + "s";
+  particle.style.height =
+    `${size}px`;
 
-  p.style.animationDelay =
-    (Math.random() * 12) + "s";
+  particle.style.left =
+    `${Math.random() * 100}vw`;
 
-  p.style.opacity =
-    0.2 + Math.random() * 0.7;
+  particle.style.top =
+    `${Math.random() * 100}vh`;
 
-  particles.appendChild(p);
+  particle.style.animation =
+    `float ${duration}s linear infinite`;
+
+  particle.style.animationDelay =
+    `${delay}s`;
+
+  particle.style.willChange =
+    "transform, opacity";
+
+  particles.appendChild(particle);
 }
 
-/* ===== ECG ===== */
+/* =========================================================
+   ULTRA SMOOTH ECG
+========================================================= */
 
-const c =
+const canvas =
   document.getElementById("ecg");
 
 const ctx =
-  c.getContext("2d");
+  canvas.getContext("2d", {
+    alpha:true,
+    desynchronized:true
+  });
 
 let dpr =
-  window.devicePixelRatio || 1;
+  Math.min(window.devicePixelRatio || 1, 2);
 
-let w,h,phase=0;
+let width;
+let height;
 
-let beat = 90;
-let targetBeat = 90;
+function resizeCanvas(){
 
-let amp = 1;
-let targetAmp = 1;
+  width =
+    canvas.clientWidth;
 
-let base = 0;
+  height =
+    canvas.clientHeight;
 
-function resize(){
+  canvas.width =
+    width * dpr;
 
-  w = c.clientWidth;
-  h = c.clientHeight;
+  canvas.height =
+    height * dpr;
 
-  c.width = w * dpr;
-  c.height = h * dpr;
-
-  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
 }
 
-resize();
+resizeCanvas();
 
-window.addEventListener("resize", resize);
+window.addEventListener(
+  "resize",
+  resizeCanvas,
+  { passive:true }
+);
 
-function wave(t,a){
+/* =========================================================
+   ECG CONFIG
+========================================================= */
 
-  if(t < 12) return 0;
-  if(t < 20) return -12*a;
-  if(t < 24) return 55*a;
-  if(t < 30) return -22*a;
-  if(t < 46) return 14*a;
+let phase = 0;
+
+let speed = 118;
+let targetSpeed = 118;
+
+let amplitude = 1;
+let targetAmplitude = 1;
+
+let drift = 0;
+
+function ecgShape(t, amp){
+
+  if(t < 10)
+    return 0;
+
+  if(t < 18)
+    return -10 * amp;
+
+  if(t < 22)
+    return 52 * amp;
+
+  if(t < 28)
+    return -18 * amp;
+
+  if(t < 44)
+    return 12 * amp;
 
   return 0;
 }
 
-function draw(){
+/* =========================================================
+   SMOOTH RENDER LOOP
+========================================================= */
 
-  ctx.clearRect(0,0,w,h);
+let previousFrame =
+  performance.now();
 
-  beat +=
-    (targetBeat - beat) * 0.02;
+function render(currentTime){
 
-  amp +=
-    (targetAmp - amp) * 0.02;
+  const delta =
+    Math.min(
+      (currentTime - previousFrame) / 16.666,
+      1.5
+    );
 
-  base += 0.002;
+  previousFrame =
+    currentTime;
+
+  ctx.clearRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  speed +=
+    (targetSpeed - speed)
+    * 0.018 * delta;
+
+  amplitude +=
+    (targetAmplitude - amplitude)
+    * 0.018 * delta;
+
+  drift +=
+    0.0022 * delta;
+
+  phase +=
+    1.55 * delta;
+
+  const darkMode =
+    !document.body.classList.contains("light");
 
   ctx.strokeStyle =
-    document.body.classList.contains("light")
-      ? "rgba(60,90,180,.92)"
-      : "rgba(180,111,255,.95)";
+    darkMode
+      ? "rgba(190,120,255,.96)"
+      : "rgba(70,90,200,.95)";
 
-  ctx.lineWidth = 2.4;
+  ctx.lineWidth = 2.2;
 
   ctx.shadowColor =
     ctx.strokeStyle;
 
   ctx.shadowBlur =
-    document.body.classList.contains("light")
-      ? 8
-      : 18;
+    darkMode ? 18 : 8;
 
   ctx.beginPath();
 
-  for(let x = 0; x < w; x++){
+  for(let x = 0; x < width; x++){
 
     const t =
-      (x + phase) % beat;
+      (x + phase) % speed;
 
     const y =
-      h/2 +
-      Math.sin(base) * 4 +
-      wave(t,amp);
+      height / 2 +
+      Math.sin(drift) * 4 +
+      ecgShape(t, amplitude);
 
     if(x === 0){
-      ctx.moveTo(x,y);
+
+      ctx.moveTo(x, y);
+
     } else {
-      ctx.lineTo(x,y);
+
+      ctx.lineTo(x, y);
     }
   }
 
   ctx.stroke();
 
-  phase += 1.8;
+  if(Math.random() < 0.003){
 
-  if(Math.random() < 0.01){
+    targetSpeed =
+      108 + Math.random() * 18;
 
-    targetBeat =
-      82 + Math.random() * 14;
-
-    targetAmp =
-      0.85 + Math.random() * 0.3;
+    targetAmplitude =
+      0.9 + Math.random() * 0.22;
   }
 
-  requestAnimationFrame(draw);
+  requestAnimationFrame(render);
 }
 
-draw();
+requestAnimationFrame(render);
 
 </script>
 
