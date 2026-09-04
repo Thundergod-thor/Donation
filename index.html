@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
 <title>Support The Forge</title>
 
-<meta name="description"
-      content="Support open-source Android development, custom ROMs, device bringups and long-term maintenance.">
+<meta
+    name="description"
+    content="Support open-source Android development, custom ROMs, device bringups and long-term maintenance."
+>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
@@ -23,14 +31,23 @@
 ========================================================= */
 
 :root {
+
     --text: #f5f7ff;
-    --muted: rgba(235,240,255,.68);
 
-    --purple: #a86cff;
-    --purple-light: #c596ff;
-    --blue: #6ea8ff;
+    --muted:
+        rgba(235,240,255,.68);
 
-    --border: rgba(255,255,255,.12);
+    --purple:
+        #a86cff;
+
+    --purple-light:
+        #c596ff;
+
+    --blue:
+        #6ea8ff;
+
+    --border:
+        rgba(255,255,255,.12);
 
     --shadow:
         0 30px 100px rgba(0,0,0,.55);
@@ -52,28 +69,36 @@ html {
 }
 
 body {
+
     min-height: 100vh;
 
-    font-family: "Inter", sans-serif;
+    font-family:
+        "Inter",
+        sans-serif;
 
-    color: var(--text);
+    color:
+        var(--text);
 
     background:
+
         radial-gradient(
             circle at 15% 15%,
             rgba(132,68,255,.16),
             transparent 30%
         ),
+
         radial-gradient(
             circle at 85% 20%,
             rgba(64,133,255,.13),
             transparent 28%
         ),
+
         radial-gradient(
             circle at 50% 100%,
             rgba(145,62,255,.14),
             transparent 38%
         ),
+
         linear-gradient(
             180deg,
             #03040a 0%,
@@ -83,7 +108,8 @@ body {
 
     overflow-x: hidden;
 
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing:
+        antialiased;
 }
 
 
@@ -92,14 +118,21 @@ body {
 ========================================================= */
 
 .background {
+
     position: fixed;
+
     inset: 0;
+
     pointer-events: none;
+
     overflow: hidden;
+
     z-index: -5;
 }
 
+
 .orb {
+
     position: absolute;
 
     width: 380px;
@@ -107,41 +140,64 @@ body {
 
     border-radius: 50%;
 
-    filter: blur(90px);
+    filter:
+        blur(90px);
+
     opacity: .18;
 
     animation:
         orbFloat 14s ease-in-out infinite alternate;
 }
 
+
 .orb.one {
+
     top: -150px;
     left: -120px;
-    background: #7b3cff;
+
+    background:
+        #7b3cff;
 }
+
 
 .orb.two {
+
     top: 35%;
     right: -180px;
-    background: #367cff;
-    animation-delay: -5s;
+
+    background:
+        #367cff;
+
+    animation-delay:
+        -5s;
 }
 
+
 .orb.three {
+
     bottom: -200px;
     left: 35%;
-    background: #a33cff;
-    animation-delay: -9s;
+
+    background:
+        #a33cff;
+
+    animation-delay:
+        -9s;
 }
+
 
 @keyframes orbFloat {
 
     from {
-        transform: translate3d(0,0,0) scale(1);
+        transform:
+            translate3d(0,0,0)
+            scale(1);
     }
 
     to {
-        transform: translate3d(30px,-35px,0) scale(1.12);
+        transform:
+            translate3d(30px,-35px,0)
+            scale(1.12);
     }
 }
 
@@ -151,34 +207,42 @@ body {
 ========================================================= */
 
 .grid {
+
     position: fixed;
+
     inset: 0;
 
     pointer-events: none;
 
     background-image:
+
         linear-gradient(
             rgba(255,255,255,.022) 1px,
             transparent 1px
         ),
+
         linear-gradient(
             90deg,
             rgba(255,255,255,.022) 1px,
             transparent 1px
         );
 
-    background-size: 45px 45px;
+    background-size:
+        45px 45px;
 
     mask-image:
+
         radial-gradient(
             circle at center,
             black 15%,
             transparent 78%
         );
 
-    opacity: .65;
+    opacity:
+        .65;
 
-    z-index: -4;
+    z-index:
+        -4;
 }
 
 
@@ -187,7 +251,9 @@ body {
 ========================================================= */
 
 .particles {
+
     position: fixed;
+
     inset: 0;
 
     pointer-events: none;
@@ -197,7 +263,9 @@ body {
     z-index: -3;
 }
 
+
 .particle {
+
     position: absolute;
 
     width: 3px;
@@ -205,23 +273,33 @@ body {
 
     border-radius: 50%;
 
-    background: #b77cff;
+    background:
+        #b77cff;
 
     box-shadow:
+
         0 0 8px #a86cff,
-        0 0 18px rgba(168,108,255,.7);
+
+        0 0 18px
+        rgba(168,108,255,.7);
 
     opacity: 0;
 
-    animation: particleMove linear infinite;
+    animation:
+        particleMove
+        linear
+        infinite;
 }
+
 
 @keyframes particleMove {
 
     0% {
+
         transform:
             translate3d(0,110vh,0)
             scale(.4);
+
         opacity: 0;
     }
 
@@ -234,9 +312,11 @@ body {
     }
 
     100% {
+
         transform:
             translate3d(30px,-15vh,0)
             scale(1);
+
         opacity: 0;
     }
 }
@@ -247,10 +327,13 @@ body {
 ========================================================= */
 
 .page {
+
     width: 100%;
+
     min-height: 100vh;
 
     display: flex;
+
     justify-content: center;
 
     padding:
@@ -261,20 +344,26 @@ body {
 
 
 /* =========================================================
-   MAIN CARD
+   MAIN SHELL
 ========================================================= */
 
 .shell {
-    width: min(1120px, 100%);
+
+    width:
+        min(1120px, 100%);
 
     position: relative;
+
     overflow: hidden;
 
-    border-radius: 38px;
+    border-radius:
+        38px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     background:
+
         linear-gradient(
             145deg,
             rgba(255,255,255,.075),
@@ -290,11 +379,16 @@ body {
         saturate(150%);
 
     box-shadow:
+
         var(--shadow),
-        inset 0 1px 0 rgba(255,255,255,.10);
+
+        inset 0 1px 0
+        rgba(255,255,255,.10);
 }
 
+
 .shell::before {
+
     content: "";
 
     position: absolute;
@@ -305,20 +399,25 @@ body {
     top: -300px;
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 
     background:
+
         radial-gradient(
             circle,
             rgba(168,108,255,.20),
             transparent 68%
         );
 
-    filter: blur(20px);
+    filter:
+        blur(20px);
 
-    pointer-events: none;
+    pointer-events:
+        none;
 }
 
 
@@ -328,23 +427,31 @@ body {
 
 .hero {
 
-    min-height: 540px;
+    min-height:
+        540px;
 
     padding:
         90px
         70px
         75px;
 
-    display: flex;
+    display:
+        flex;
 
-    flex-direction: column;
+    flex-direction:
+        column;
 
-    justify-content: center;
-    align-items: center;
+    justify-content:
+        center;
 
-    text-align: center;
+    align-items:
+        center;
 
-    position: relative;
+    text-align:
+        center;
+
+    position:
+        relative;
 }
 
 
@@ -354,59 +461,86 @@ body {
 
 .eyebrow {
 
-    display: inline-flex;
+    display:
+        inline-flex;
 
-    align-items: center;
-    gap: 9px;
+    align-items:
+        center;
 
-    padding: 9px 15px;
+    gap:
+        9px;
 
-    border-radius: 999px;
+    padding:
+        9px 15px;
+
+    border-radius:
+        999px;
 
     background:
         rgba(255,255,255,.055);
 
     border:
-        1px solid rgba(255,255,255,.10);
+        1px solid
+        rgba(255,255,255,.10);
 
-    backdrop-filter: blur(16px);
+    backdrop-filter:
+        blur(16px);
 
     color:
         rgba(238,240,255,.75);
 
-    font-size: .76rem;
-    font-weight: 600;
+    font-size:
+        .76rem;
 
-    letter-spacing: .14em;
-    text-transform: uppercase;
+    font-weight:
+        600;
 
-    margin-bottom: 28px;
+    letter-spacing:
+        .14em;
+
+    text-transform:
+        uppercase;
+
+    margin-bottom:
+        28px;
 
     animation:
-        heroFloat 5s ease-in-out infinite;
+        heroFloat
+        5s ease-in-out
+        infinite;
 }
+
 
 .eyebrow-dot {
 
-    width: 7px;
-    height: 7px;
+    width:
+        7px;
 
-    border-radius: 50%;
+    height:
+        7px;
 
-    background: var(--purple);
+    border-radius:
+        50%;
+
+    background:
+        var(--purple);
 
     box-shadow:
-        0 0 12px var(--purple);
+        0 0 12px
+        var(--purple);
 }
+
 
 @keyframes heroFloat {
 
     0%,100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
-        transform: translateY(-5px);
+        transform:
+            translateY(-5px);
     }
 }
 
@@ -418,21 +552,27 @@ body {
 .hero h1 {
 
     font-size:
+
         clamp(
             3.4rem,
             8vw,
             6.8rem
         );
 
-    line-height: .9;
+    line-height:
+        .9;
 
-    letter-spacing: -.065em;
+    letter-spacing:
+        -.065em;
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    max-width: 900px;
+    max-width:
+        900px;
 
     background:
+
         linear-gradient(
             110deg,
             #ffffff 10%,
@@ -440,17 +580,24 @@ body {
             #8abaff 90%
         );
 
-    -webkit-background-clip: text;
-    background-clip: text;
+    -webkit-background-clip:
+        text;
 
-    color: transparent;
+    background-clip:
+        text;
+
+    color:
+        transparent;
 
     text-shadow:
-        0 0 50px rgba(167,103,255,.18);
+        0 0 50px
+        rgba(167,103,255,.18);
 }
 
+
 .hero h1 span {
-    color: var(--purple-light);
+    color:
+        var(--purple-light);
 }
 
 
@@ -460,25 +607,30 @@ body {
 
 .hero-description {
 
-    max-width: 650px;
+    max-width:
+        650px;
 
-    margin-top: 28px;
+    margin-top:
+        28px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
     font-size:
+
         clamp(
             .95rem,
             2vw,
             1.08rem
         );
 
-    line-height: 1.8;
+    line-height:
+        1.8;
 }
 
 
 /* =========================================================
-   CONTENT
+   PAYMENT AREA
 ========================================================= */
 
 .content {
@@ -490,49 +642,55 @@ body {
 }
 
 
-/* =========================================================
-   PAYMENT AREA
-========================================================= */
-
 .payment-area {
 
-    position: relative;
+    position:
+        relative;
 
-    max-width: 650px;
+    max-width:
+        650px;
 
-    margin: 0 auto;
+    margin:
+        0 auto;
 }
 
 
 /* =========================================================
-   FLOATING PAYMENT SWITCH
+   FLOATING PAYMENT PILL
 ========================================================= */
 
 .payment-selector {
 
-    position: relative;
+    position:
+        relative;
 
-    z-index: 5;
+    z-index:
+        5;
 
-    display: flex;
+    display:
+        flex;
 
-    width: fit-content;
+    width:
+        fit-content;
 
     margin:
-        0 auto
-        -24px;
+        0 auto -24px;
 
-    padding: 6px;
+    padding:
+        6px;
 
-    gap: 4px;
+    gap:
+        4px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
     background:
-        rgba(15,16,28,.72);
+        rgba(15,16,28,.78);
 
     border:
-        1px solid rgba(255,255,255,.14);
+        1px solid
+        rgba(255,255,255,.14);
 
     backdrop-filter:
         blur(28px)
@@ -543,34 +701,50 @@ body {
         saturate(170%);
 
     box-shadow:
-        0 15px 45px rgba(0,0,0,.42),
-        inset 0 1px 0 rgba(255,255,255,.10);
+
+        0 15px 45px
+        rgba(0,0,0,.42),
+
+        inset 0 1px 0
+        rgba(255,255,255,.10);
 }
 
 
 /* =========================================================
-   PAYMENT OPTION
+   PAYMENT BUTTON
 ========================================================= */
 
 .payment-option {
 
-    position: relative;
+    position:
+        relative;
 
-    border: 0;
+    border:
+        0;
 
-    min-width: 125px;
-    height: 46px;
+    min-width:
+        120px;
 
-    padding: 0 17px;
+    height:
+        46px;
 
-    border-radius: 999px;
+    padding:
+        0 18px;
 
-    display: flex;
+    border-radius:
+        999px;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        flex;
 
-    gap: 8px;
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
 
     color:
         rgba(235,240,255,.55);
@@ -578,42 +752,60 @@ body {
     background:
         transparent;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    font-family: inherit;
+    font-family:
+        inherit;
 
-    font-size: .82rem;
-    font-weight: 700;
+    font-size:
+        .82rem;
+
+    font-weight:
+        700;
 
     transition:
+
         color .3s ease,
+
         background .35s ease,
+
         box-shadow .35s ease,
+
         transform .3s ease;
 }
+
 
 .payment-option:hover {
 
     color:
-        rgba(255,255,255,.88);
+        rgba(255,255,255,.9);
 }
+
 
 .payment-option.active {
 
-    color: #fff;
+    color:
+        #ffffff;
 
     background:
+
         linear-gradient(
             135deg,
-            rgba(168,108,255,.32),
+            rgba(168,108,255,.34),
             rgba(110,168,255,.20)
         );
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.14),
-        0 4px 18px rgba(125,75,220,.20);
 
-    transform: translateY(-1px);
+        inset 0 1px 0
+        rgba(255,255,255,.14),
+
+        0 4px 18px
+        rgba(125,75,220,.22);
+
+    transform:
+        translateY(-1px);
 }
 
 
@@ -623,21 +815,32 @@ body {
 
 .payment-icon {
 
-    width: 25px;
-    height: 25px;
+    width:
+        24px;
 
-    display: flex;
+    height:
+        24px;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        flex;
 
-    font-size: 1rem;
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        1rem;
 
     transition:
-        transform .35s cubic-bezier(.2,.9,.2,1);
+        transform .35s
+        cubic-bezier(.2,.9,.2,1);
 }
 
-.payment-option.active .payment-icon {
+
+.payment-option.active
+.payment-icon {
 
     transform:
         scale(1.08);
@@ -645,21 +848,16 @@ body {
 
 
 /* =========================================================
-   HIDE OLD EXTRA PAYMENT TEXT
+   PAYMENT NAME
 ========================================================= */
 
-.payment-info {
-    display: contents;
-}
-
-.payment-sub,
-.check {
-    display: none;
-}
-
 .payment-name {
-    font-size: .82rem;
-    font-weight: 700;
+
+    font-size:
+        .82rem;
+
+    font-weight:
+        700;
 }
 
 
@@ -669,15 +867,20 @@ body {
 
 .payment-stage {
 
-    position: relative;
+    position:
+        relative;
 
-    width: 100%;
+    width:
+        100%;
 
-    padding: 18px;
+    padding:
+        18px;
 
-    border-radius: 36px;
+    border-radius:
+        36px;
 
     background:
+
         linear-gradient(
             145deg,
             rgba(255,255,255,.075),
@@ -685,7 +888,8 @@ body {
         );
 
     border:
-        1px solid rgba(255,255,255,.105);
+        1px solid
+        rgba(255,255,255,.105);
 
     backdrop-filter:
         blur(30px);
@@ -694,28 +898,41 @@ body {
         blur(30px);
 
     box-shadow:
-        0 30px 80px rgba(0,0,0,.45),
-        inset 0 1px 0 rgba(255,255,255,.08);
 
-    transform-style: preserve-3d;
+        0 30px 80px
+        rgba(0,0,0,.45),
+
+        inset 0 1px 0
+        rgba(255,255,255,.08);
 }
 
 
-/* top light */
+/* =========================================================
+   TOP LIGHT
+========================================================= */
 
 .payment-stage::before {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    top: 0;
-    left: 15%;
+    top:
+        0;
 
-    width: 70%;
-    height: 1px;
+    left:
+        15%;
+
+    width:
+        70%;
+
+    height:
+        1px;
 
     background:
+
         linear-gradient(
             90deg,
             transparent,
@@ -723,7 +940,8 @@ body {
             transparent
         );
 
-    filter: blur(.3px);
+    filter:
+        blur(.3px);
 }
 
 
@@ -733,59 +951,86 @@ body {
 
 .payment-image-wrap {
 
-    position: relative;
+    position:
+        relative;
 
-    border-radius: 27px;
+    border-radius:
+        27px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
-    background: #080a11;
+    background:
+        #080a11;
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio:
+        1 / 1;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
-    justify-content: center;
+    align-items:
+        center;
+
+    justify-content:
+        center;
 }
+
 
 .payment-image {
 
-    width: 100%;
-    height: 100%;
+    width:
+        100%;
 
-    object-fit: contain;
+    height:
+        100%;
 
-    display: block;
+    object-fit:
+        contain;
+
+    display:
+        block;
 
     transition:
+
         opacity .3s ease,
-        transform .55s cubic-bezier(.2,.9,.2,1),
+
+        transform .55s
+        cubic-bezier(.2,.9,.2,1),
+
         filter .3s ease;
 }
 
+
 .payment-image.switching {
 
-    opacity: 0;
+    opacity:
+        0;
 
     transform:
+
         translateY(14px)
         scale(.97);
 
-    filter: blur(7px);
+    filter:
+        blur(7px);
 }
 
 
 /* =========================================================
-   PAYMENT META
+   PAYMENT LABEL
 ========================================================= */
 
 .payment-meta {
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
-    justify-content: center;
+    align-items:
+        center;
+
+    justify-content:
+        center;
 
     padding:
         17px
@@ -793,15 +1038,19 @@ body {
         2px;
 }
 
+
 .payment-current {
 
-    font-size: .78rem;
+    font-size:
+        .78rem;
 
     color:
         rgba(255,255,255,.45);
 
-    letter-spacing: .04em;
+    letter-spacing:
+        .04em;
 }
+
 
 .payment-current strong {
 
@@ -821,16 +1070,20 @@ body {
         55px
         50px;
 
-    text-align: center;
+    text-align:
+        center;
 
     color:
         rgba(235,240,255,.30);
 
-    font-size: .68rem;
+    font-size:
+        .68rem;
 
-    letter-spacing: .12em;
+    letter-spacing:
+        .12em;
 
-    text-transform: uppercase;
+    text-transform:
+        uppercase;
 }
 
 
@@ -838,7 +1091,7 @@ body {
    RESPONSIVE
 ========================================================= */
 
-@media(max-width: 800px) {
+@media(max-width:800px) {
 
     .page {
 
@@ -848,14 +1101,18 @@ body {
             40px;
     }
 
+
     .shell {
 
-        border-radius: 28px;
+        border-radius:
+            28px;
     }
+
 
     .hero {
 
-        min-height: 500px;
+        min-height:
+            500px;
 
         padding:
             75px
@@ -863,9 +1120,11 @@ body {
             65px;
     }
 
+
     .hero h1 {
 
         font-size:
+
             clamp(
                 3.15rem,
                 16vw,
@@ -873,12 +1132,16 @@ body {
             );
     }
 
+
     .hero-description {
 
-        font-size: .9rem;
+        font-size:
+            .9rem;
 
-        line-height: 1.7;
+        line-height:
+            1.7;
     }
+
 
     .content {
 
@@ -888,45 +1151,62 @@ body {
             45px;
     }
 
+
     .payment-selector {
 
-        margin-bottom: -24px;
+        margin-bottom:
+            -24px;
 
-        padding: 5px;
+        padding:
+            5px;
     }
+
 
     .payment-option {
 
-        min-width: 108px;
+        min-width:
+            108px;
 
-        height: 43px;
+        height:
+            43px;
 
         padding:
-            0
-            14px;
+            0 14px;
 
-        font-size: .75rem;
+        font-size:
+            .75rem;
     }
+
 
     .payment-icon {
 
-        font-size: .9rem;
+        font-size:
+            .9rem;
 
-        width: 22px;
-        height: 22px;
+        width:
+            22px;
+
+        height:
+            22px;
     }
+
 
     .payment-stage {
 
-        padding: 12px;
+        padding:
+            12px;
 
-        border-radius: 29px;
+        border-radius:
+            29px;
     }
+
 
     .payment-image-wrap {
 
-        border-radius: 22px;
+        border-radius:
+            22px;
     }
+
 
     .footer {
 
@@ -942,20 +1222,22 @@ body {
    SMALL PHONES
 ========================================================= */
 
-@media(max-width: 390px) {
+@media(max-width:390px) {
 
     .payment-option {
 
-        min-width: 96px;
+        min-width:
+            96px;
 
         padding:
-            0
-            11px;
+            0 11px;
     }
+
 
     .payment-selector {
 
-        gap: 2px;
+        gap:
+            2px;
     }
 }
 
@@ -978,16 +1260,41 @@ body {
 
 </div>
 
+
 <div class="grid"></div>
+
 
 <div class="particles">
 
-    <span class="particle" style="left:8%;animation-duration:11s;animation-delay:-3s;"></span>
-    <span class="particle" style="left:22%;animation-duration:14s;animation-delay:-8s;"></span>
-    <span class="particle" style="left:39%;animation-duration:12s;animation-delay:-5s;"></span>
-    <span class="particle" style="left:57%;animation-duration:16s;animation-delay:-11s;"></span>
-    <span class="particle" style="left:74%;animation-duration:13s;animation-delay:-2s;"></span>
-    <span class="particle" style="left:91%;animation-duration:15s;animation-delay:-7s;"></span>
+    <span
+        class="particle"
+        style="left:8%;animation-duration:11s;animation-delay:-3s;">
+    </span>
+
+    <span
+        class="particle"
+        style="left:22%;animation-duration:14s;animation-delay:-8s;">
+    </span>
+
+    <span
+        class="particle"
+        style="left:39%;animation-duration:12s;animation-delay:-5s;">
+    </span>
+
+    <span
+        class="particle"
+        style="left:57%;animation-duration:16s;animation-delay:-11s;">
+    </span>
+
+    <span
+        class="particle"
+        style="left:74%;animation-duration:13s;animation-delay:-2s;">
+    </span>
+
+    <span
+        class="particle"
+        style="left:91%;animation-duration:15s;animation-delay:-7s;">
+    </span>
 
 </div>
 
@@ -1017,8 +1324,11 @@ body {
 
 
     <h1>
+
         Keep The Forge<br>
+
         <span>Running.</span>
+
     </h1>
 
 
@@ -1033,7 +1343,6 @@ body {
 
     </p>
 
-
 </section>
 
 
@@ -1046,7 +1355,9 @@ body {
 <div class="payment-area">
 
 
-    <!-- FLOATING UPI / PAYPAL SWITCH -->
+    <!-- ===============================================
+         FLOATING UPI / PAYPAL PILL
+    ================================================ -->
 
     <div class="payment-selector">
 
@@ -1054,7 +1365,8 @@ body {
         <button
             class="payment-option active"
             data-payment="upi"
-            type="button">
+            type="button"
+            aria-label="Show UPI payment">
 
             <span class="payment-icon">
                 💳
@@ -1070,7 +1382,8 @@ body {
         <button
             class="payment-option"
             data-payment="paypal"
-            type="button">
+            type="button"
+            aria-label="Show PayPal payment">
 
             <span class="payment-icon">
                 🌐
@@ -1086,7 +1399,9 @@ body {
     </div>
 
 
-    <!-- PAYMENT CARD -->
+    <!-- ===============================================
+         PAYMENT CARD
+    ================================================ -->
 
     <div class="payment-stage">
 
@@ -1096,8 +1411,9 @@ body {
             <img
                 id="paymentImage"
                 class="payment-image"
-                src="upi.png"
-                alt="UPI payment QR code">
+                src="upi.jpg"
+                alt="UPI payment QR code"
+            >
 
         </div>
 
@@ -1106,9 +1422,11 @@ body {
 
             <div
                 id="paymentCurrent"
-                class="payment-current">
+                class="payment-current"
+            >
 
-                Scan to support <strong>the project</strong>
+                Scan to support
+                <strong>the project</strong>
 
             </div>
 
@@ -1142,36 +1460,32 @@ body {
 <script>
 
 /* =========================================================
-   PAYMENT SWITCH
+   PAYMENT DATA
 ========================================================= */
-
-/*
-    CHANGE THESE TWO FILES:
-
-    upi.png
-    paypal.png
-
-    Put your actual QR/payment images beside this HTML file.
-*/
 
 const payments = {
 
     upi: {
 
-        image: "upi.png",
+        image:
+            "upi.jpg",
 
-        alt: "UPI payment QR code",
+        alt:
+            "UPI payment QR code",
 
         text:
             'Scan to support <strong>the project</strong>'
 
     },
 
+
     paypal: {
 
-        image: "paypal.png",
+        image:
+            "paypal.jpg",
 
-        alt: "PayPal payment QR code",
+        alt:
+            "PayPal payment QR code",
 
         text:
             'Support via <strong>PayPal</strong>'
@@ -1181,52 +1495,110 @@ const payments = {
 };
 
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const buttons =
-    document.querySelectorAll(".payment-option");
+    document.querySelectorAll(
+        ".payment-option"
+    );
+
 
 const image =
-    document.getElementById("paymentImage");
+    document.getElementById(
+        "paymentImage"
+    );
+
 
 const current =
-    document.getElementById("paymentCurrent");
+    document.getElementById(
+        "paymentCurrent"
+    );
 
+
+/* =========================================================
+   PAYMENT SWITCH
+========================================================= */
 
 buttons.forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-        const type =
-            button.dataset.payment;
+            const type =
+                button.dataset.payment;
 
-        const payment =
-            payments[type];
+            const payment =
+                payments[type];
 
 
-        if (
-            button.classList.contains("active")
-        ) {
-            return;
+            /* Already selected */
+
+            if (
+                button.classList.contains(
+                    "active"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /* Remove active */
+
+            buttons.forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            /* Activate selected */
+
+            button.classList.add(
+                "active"
+            );
+
+
+            /* Animate image out */
+
+            image.classList.add(
+                "switching"
+            );
+
+
+            /* Change image */
+
+            setTimeout(() => {
+
+                image.src =
+                    payment.image;
+
+                image.alt =
+                    payment.alt;
+
+                current.innerHTML =
+                    payment.text;
+
+
+                image.classList.remove(
+                    "switching"
+                );
+
+            }, 280);
+
         }
+    );
 
+});
 
-        /* Remove active state */
+</script>
 
-        buttons.forEach(item => {
-
-            item.classList.remove("active");
-
-        });
-
-
-        /* Activate selected */
-
-        button.classList.add("active");
-
-
-        /* Animate image out */
-
-        image.classList.add("switching");
-
-
-        setTimeout(() => {
-          
+</body>
+</html>
+                  
