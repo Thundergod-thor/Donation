@@ -656,57 +656,61 @@ body {
 
 
 /* =========================================================
-   FLOATING PAYMENT PILL
+   FLOATING GLASS PAYMENT PILL
 ========================================================= */
 
 .payment-selector {
 
-    position:
-        relative;
+    position: absolute;
+    top: -42px;
+    left: 50%;
+    transform: translateX(-50%);
 
-    z-index:
-        5;
+    z-index: 20;
 
-    display:
-        flex;
+    display: flex;
+    align-items: center;
 
-    width:
-        fit-content;
+    padding: 6px;
+    gap: 4px;
 
-    margin:
-        0 auto -24px;
-
-    padding:
-        6px;
-
-    gap:
-        4px;
-
-    border-radius:
-        999px;
+    border-radius: 999px;
 
     background:
-        rgba(15,16,28,.78);
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.13),
+            rgba(255,255,255,.045)
+        );
 
-    border:
-        1px solid
-        rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.20);
 
     backdrop-filter:
         blur(28px)
-        saturate(170%);
+        saturate(180%);
 
     -webkit-backdrop-filter:
         blur(28px)
-        saturate(170%);
+        saturate(180%);
 
     box-shadow:
+        0 22px 55px rgba(0,0,0,.48),
+        0 5px 20px rgba(120,70,255,.18),
+        inset 0 1px 0 rgba(255,255,255,.20),
+        inset 0 -1px 0 rgba(255,255,255,.035);
 
-        0 15px 45px
-        rgba(0,0,0,.42),
+    animation: pillFloat 5s ease-in-out infinite;
+}
 
-        inset 0 1px 0
-        rgba(255,255,255,.10);
+@keyframes pillFloat {
+
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-4px);
+    }
 }
 
 
@@ -716,96 +720,79 @@ body {
 
 .payment-option {
 
-    position:
-        relative;
+    position: relative;
 
-    border:
-        0;
+    border: 0;
 
-    min-width:
-        120px;
+    min-width: 155px;
+    height: 54px;
 
-    height:
-        46px;
+    padding: 0 25px;
 
-    padding:
-        0 18px;
+    border-radius: 999px;
 
-    border-radius:
-        999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    display:
-        flex;
+    gap: 11px;
 
-    align-items:
-        center;
+    color: rgba(235,240,255,.52);
+    background: transparent;
 
-    justify-content:
-        center;
+    cursor: pointer;
 
-    gap:
-        8px;
-
-    color:
-        rgba(235,240,255,.55);
-
-    background:
-        transparent;
-
-    cursor:
-        pointer;
-
-    font-family:
-        inherit;
-
-    font-size:
-        .82rem;
-
-    font-weight:
-        700;
+    font-family: inherit;
+    font-size: .94rem;
+    font-weight: 700;
 
     transition:
-
-        color .3s ease,
-
-        background .35s ease,
-
-        box-shadow .35s ease,
-
+        color .35s ease,
+        background .4s ease,
+        box-shadow .4s ease,
         transform .3s ease;
 }
 
-
 .payment-option:hover {
-
-    color:
-        rgba(255,255,255,.9);
+    color: rgba(255,255,255,.90);
 }
-
 
 .payment-option.active {
 
-    color:
-        #ffffff;
+    color: #ffffff;
 
     background:
-
         linear-gradient(
             135deg,
-            rgba(168,108,255,.34),
-            rgba(110,168,255,.20)
+            rgba(168,108,255,.48),
+            rgba(110,168,255,.25)
         );
 
     box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.20),
+        inset 0 -1px 0 rgba(255,255,255,.04),
+        0 8px 25px rgba(115,70,220,.24);
 
-        inset 0 1px 0
-        rgba(255,255,255,.14),
+    transform: translateY(-1px);
+}
 
-        0 4px 18px
-        rgba(125,75,220,.22);
+.payment-option.active::before {
 
-    transform:
-        translateY(-1px);
+    content: "";
+
+    position: absolute;
+    inset: 4px;
+
+    border-radius: inherit;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(255,255,255,.13),
+            transparent 65%
+        );
+
+    pointer-events: none;
 }
 
 
@@ -815,35 +802,28 @@ body {
 
 .payment-icon {
 
-    width:
-        24px;
+    width: 28px;
+    height: 28px;
 
-    height:
-        24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    font-size:
-        1rem;
+    font-size: 1.15rem;
 
     transition:
-        transform .35s
-        cubic-bezier(.2,.9,.2,1);
+        transform .4s cubic-bezier(.2,.9,.2,1),
+        filter .35s ease;
 }
 
+.payment-option.active .payment-icon {
 
-.payment-option.active
-.payment-icon {
+    transform: scale(1.12);
 
-    transform:
-        scale(1.08);
+    filter:
+        drop-shadow(
+            0 0 7px rgba(255,255,255,.18)
+        );
 }
 
 
@@ -853,11 +833,12 @@ body {
 
 .payment-name {
 
-    font-size:
-        .82rem;
+    position: relative;
+    z-index: 2;
 
-    font-weight:
-        700;
+    font-size: .94rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
 }
 
 
@@ -867,43 +848,30 @@ body {
 
 .payment-stage {
 
-    position:
-        relative;
+    position: relative;
+    width: 100%;
 
-    width:
-        100%;
+    margin-top: 42px;
 
-    padding:
-        18px;
+    padding: 18px;
 
-    border-radius:
-        36px;
+    border-radius: 36px;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(255,255,255,.075),
             rgba(255,255,255,.025)
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.105);
+    border: 1px solid rgba(255,255,255,.105);
 
-    backdrop-filter:
-        blur(30px);
-
-    -webkit-backdrop-filter:
-        blur(30px);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
 
     box-shadow:
-
-        0 30px 80px
-        rgba(0,0,0,.45),
-
-        inset 0 1px 0
-        rgba(255,255,255,.08);
+        0 30px 80px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.08);
 }
 
 
@@ -1154,27 +1122,19 @@ body {
 
     .payment-selector {
 
-        margin-bottom:
-            -24px;
-
-        padding:
-            5px;
+        top: -35px;
+        padding: 5px;
     }
 
 
     .payment-option {
 
-        min-width:
-            108px;
+        min-width: 120px;
+        height: 48px;
 
-        height:
-            43px;
+        padding: 0 17px;
 
-        padding:
-            0 14px;
-
-        font-size:
-            .75rem;
+        font-size: .82rem;
     }
 
 
@@ -1193,8 +1153,9 @@ body {
 
     .payment-stage {
 
-        padding:
-            12px;
+        margin-top: 35px;
+
+        padding: 12px;
 
         border-radius:
             29px;
@@ -1226,11 +1187,8 @@ body {
 
     .payment-option {
 
-        min-width:
-            96px;
-
-        padding:
-            0 11px;
+        min-width: 105px;
+        padding: 0 13px;
     }
 
 
